@@ -132,7 +132,7 @@ export function QuoteFunnel({ started, onStart }: { started: boolean; onStart: (
         )}
 
         <div key={step} className="animate-funnel-in p-5 sm:p-8">
-          {step <= 2 && <QuestionStep step={step} answers={answers} onAnswer={answer} />}
+          {step <= 2 && <QuestionStep step={step as 0 | 1 | 2} answers={answers} onAnswer={answer} />}
 
           {step === 3 && (
             <>
