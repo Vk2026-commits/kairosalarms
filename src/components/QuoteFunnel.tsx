@@ -211,6 +211,52 @@ export function QuoteFunnel({ started, onStart }: { started: boolean; onStart: (
   );
 }
 
+function QuestionStep({
+  step,
+  answers,
+  onAnswer,
+}: {
+  step: 0 | 1 | 2;
+  answers: QuoteAnswers;
+  onAnswer: (key: keyof QuoteAnswers, value: string, questionIndex: number) => void;
+}) {
+  const question = QUESTIONS[step];
+  if (!question) return null;
+  return (
+    <>
+      <h3 className="text-xl font-bold text-foreground sm:text-2xl">{question.question}</h3>
+      <div className="mt-5 grid gap-3 sm:grid-cols-2">
+        {question.options.map((option) => {
+          const Icon = option.icon;
+          const selected = answers[question.key] === option.value;
+          return (
+            <button
+              key={option.value}
+              type="button"
+              onClick={() => onAnswer(question.key, option.value, step)}
+              className={`flex min-h-16 items-center gap-4 rounded-xl border-2 px-5 py-4 text-left text-base font-semibold transition-all active:scale-[0.98] ${
+                selected
+                  ? "border-accent bg-accent/5 text-foreground"
+                  : "border-border bg-background text-foreground hover:border-accent/50 hover:bg-secondary"
+              }`}
+            >
+              <span
+                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${
+                  selected ? "bg-accent text-accent-foreground" : "bg-secondary text-primary"
+                }`}
+              >
+                <Icon className="h-5 w-5" />
+              </span>
+              {option.label}
+              {selected && <Check className="ml-auto h-5 w-5 text-accent" />}
+            </button>
+          );
+        })}
+      </div>
+    </>
+  );
+}
+
 function Results({ answers, firstName }: { answers: QuoteAnswers; firstName: string }) {
   const property = answers.propertyType === "business" ? "business" : "home";
   const doors = answers.exteriorDoors ?? "your";
