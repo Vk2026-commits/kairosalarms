@@ -190,6 +190,19 @@ export function QuoteFunnel() {
                   onChange={(e) => setForm({ ...form, zip: e.target.value })}
                   className="h-14 rounded-xl border border-input bg-card px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
                 />
+                <label className="mt-1 flex items-start gap-3 text-left">
+                  <input
+                    required
+                    type="checkbox"
+                    checked={form.callConsent}
+                    onChange={(e) => setForm({ ...form, callConsent: e.target.checked })}
+                    className="mt-0.5 h-5 w-5 shrink-0 cursor-pointer accent-primary"
+                  />
+                  <span className="text-xs font-medium leading-relaxed text-foreground">
+                    Yes, Kairos Security has my permission to call and text me about my security
+                    options. Consent is not a condition of purchase.
+                  </span>
+                </label>
                 <Button
                   type="submit"
                   disabled={submitting}
