@@ -10,6 +10,7 @@ import {
   Home,
   Loader2,
   Lock,
+  MapPin,
   ShieldCheck,
   Smartphone,
   Video,
@@ -148,8 +149,8 @@ export function QuoteFunnel() {
                 </h3>
               </div>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
-                Enter your information and a Kairos security specialist will confirm the best
-                setup and pricing for your property.
+                Enter your information and a Houston-area Kairos security specialist will confirm
+                the best setup and pricing for your property.
               </p>
               <form onSubmit={handleSubmit} className="mt-6 grid gap-3">
                 <input
@@ -190,6 +191,10 @@ export function QuoteFunnel() {
                   onChange={(e) => setForm({ ...form, zip: e.target.value })}
                   className="h-14 rounded-xl border border-input bg-card px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
                 />
+                <p className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+                  <MapPin className="h-3.5 w-3.5 shrink-0 text-primary" />
+                  We serve Houston and the surrounding areas.
+                </p>
                 <label className="mt-1 flex items-start gap-3 text-left">
                   <input
                     required
@@ -321,6 +326,9 @@ function Results({ answers, firstName }: { answers: QuoteAnswers; firstName: str
         </p>
         <p className="mt-1 text-sm text-muted-foreground">
           Final pricing depends on the equipment and protection your property needs.
+        </p>
+        <p className="mt-3 flex items-center justify-center gap-1.5 text-xs font-bold uppercase tracking-wide text-primary">
+          <MapPin className="h-3.5 w-3.5" /> Houston & surrounding areas
         </p>
       </div>
       <div className="mt-5 grid gap-3 sm:grid-cols-2">
