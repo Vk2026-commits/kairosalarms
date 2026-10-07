@@ -159,7 +159,7 @@ export function QuoteFunnel() {
                   placeholder="First name"
                   value={form.firstName}
                   onChange={(e) => setForm({ ...form, firstName: e.target.value })}
-                  className="h-14 rounded-xl border border-input bg-secondary px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-gold focus:ring-2 focus:ring-gold/30"
+                  className="h-14 rounded-xl border border-input bg-card px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
                 />
                 <input
                   required
@@ -168,7 +168,7 @@ export function QuoteFunnel() {
                   placeholder="Mobile phone"
                   value={form.phone}
                   onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                  className="h-14 rounded-xl border border-input bg-secondary px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-gold focus:ring-2 focus:ring-gold/30"
+                  className="h-14 rounded-xl border border-input bg-card px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
                 />
                 <input
                   required
@@ -177,7 +177,7 @@ export function QuoteFunnel() {
                   placeholder="Email"
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  className="h-14 rounded-xl border border-input bg-secondary px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-gold focus:ring-2 focus:ring-gold/30"
+                  className="h-14 rounded-xl border border-input bg-card px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
                 />
                 <input
                   required
@@ -188,7 +188,7 @@ export function QuoteFunnel() {
                   placeholder="ZIP code"
                   value={form.zip}
                   onChange={(e) => setForm({ ...form, zip: e.target.value })}
-                  className="h-14 rounded-xl border border-input bg-secondary px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-gold focus:ring-2 focus:ring-gold/30"
+                  className="h-14 rounded-xl border border-input bg-card px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
                 />
                 <Button
                   type="submit"
