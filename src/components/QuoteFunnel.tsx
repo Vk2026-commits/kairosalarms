@@ -99,12 +99,12 @@ export function QuoteFunnel() {
 
   return (
     <div ref={containerRef} id="quote" className="scroll-mt-6 text-left">
-      <div className="relative overflow-hidden rounded-2xl border border-gold/20 bg-burgundy shadow-2xl backdrop-blur-sm">
+      <div className="relative overflow-hidden rounded-2xl border border-border bg-card shadow-lift">
         {/* Gold progress bar */}
         {step < 4 && (
-          <div className="absolute top-0 left-0 h-1 w-full bg-navy-foreground/5">
+          <div className="absolute top-0 left-0 h-1 w-full bg-secondary">
             <div
-              className="h-full bg-gradient-to-r from-gold to-gold-soft transition-all duration-500 ease-out"
+              className="h-full bg-gradient-to-r from-primary to-primary transition-all duration-500 ease-out"
               style={{ width: `${((step + 1) / 4) * 100}%` }}
             />
           </div>
@@ -113,12 +113,12 @@ export function QuoteFunnel() {
         <div key={step} className="animate-funnel-in p-6 sm:p-10">
           {step < 4 && (
             <div className="mb-8 flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold">
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
                 {step < 3 ? `Question ${step + 1} of 3` : "Your details"}
               </span>
               <span className="flex items-center gap-1.5 opacity-60">
-                <Lock className="h-3 w-3 text-navy-foreground" />
-                <span className="text-[10px] font-semibold uppercase tracking-widest text-navy-foreground">
+                <Lock className="h-3 w-3 text-foreground" />
+                <span className="text-[10px] font-semibold uppercase tracking-widest text-foreground">
                   No credit check
                 </span>
               </span>
@@ -129,7 +129,7 @@ export function QuoteFunnel() {
             <Button
               variant="ghost"
               size="sm"
-              className="mb-4 -ml-2 text-navy-foreground/60 hover:bg-navy-foreground/5 hover:text-navy-foreground"
+              className="mb-4 -ml-2 text-muted-foreground hover:bg-secondary hover:text-foreground"
               onClick={() => { if (!advancing.current) setStep((step - 1) as Step); }}
             >
               <ArrowLeft /> Back
@@ -140,14 +140,14 @@ export function QuoteFunnel() {
           {step === 3 && (
             <>
               <div className="flex items-center gap-3">
-                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-gold/15 text-gold">
+                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary">
                   <Check className="h-6 w-6" />
                 </span>
-                <h3 className="font-['Archivo_Black'] text-xl uppercase tracking-tight text-navy-foreground sm:text-2xl">
+                <h3 className="font-['Oswald'] font-bold text-xl tracking-tight text-foreground sm:text-2xl">
                   Your Security Options Are Ready
                 </h3>
               </div>
-              <p className="mt-3 text-sm leading-relaxed text-navy-foreground/60 sm:text-base">
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
                 Enter your information and a Kairos security specialist will confirm the best
                 setup and pricing for your property.
               </p>
@@ -159,7 +159,7 @@ export function QuoteFunnel() {
                   placeholder="First name"
                   value={form.firstName}
                   onChange={(e) => setForm({ ...form, firstName: e.target.value })}
-                  className="h-14 rounded-xl border border-navy-foreground/15 bg-navy-foreground/5 px-4 text-base text-navy-foreground outline-none transition-colors placeholder:text-navy-foreground/40 focus:border-gold focus:ring-2 focus:ring-gold/30"
+                  className="h-14 rounded-xl border border-input bg-secondary px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-gold focus:ring-2 focus:ring-gold/30"
                 />
                 <input
                   required
@@ -168,7 +168,7 @@ export function QuoteFunnel() {
                   placeholder="Mobile phone"
                   value={form.phone}
                   onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                  className="h-14 rounded-xl border border-navy-foreground/15 bg-navy-foreground/5 px-4 text-base text-navy-foreground outline-none transition-colors placeholder:text-navy-foreground/40 focus:border-gold focus:ring-2 focus:ring-gold/30"
+                  className="h-14 rounded-xl border border-input bg-secondary px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-gold focus:ring-2 focus:ring-gold/30"
                 />
                 <input
                   required
@@ -177,7 +177,7 @@ export function QuoteFunnel() {
                   placeholder="Email"
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  className="h-14 rounded-xl border border-navy-foreground/15 bg-navy-foreground/5 px-4 text-base text-navy-foreground outline-none transition-colors placeholder:text-navy-foreground/40 focus:border-gold focus:ring-2 focus:ring-gold/30"
+                  className="h-14 rounded-xl border border-input bg-secondary px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-gold focus:ring-2 focus:ring-gold/30"
                 />
                 <input
                   required
@@ -188,17 +188,17 @@ export function QuoteFunnel() {
                   placeholder="ZIP code"
                   value={form.zip}
                   onChange={(e) => setForm({ ...form, zip: e.target.value })}
-                  className="h-14 rounded-xl border border-navy-foreground/15 bg-navy-foreground/5 px-4 text-base text-navy-foreground outline-none transition-colors placeholder:text-navy-foreground/40 focus:border-gold focus:ring-2 focus:ring-gold/30"
+                  className="h-14 rounded-xl border border-input bg-secondary px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-gold focus:ring-2 focus:ring-gold/30"
                 />
                 <Button
                   type="submit"
                   disabled={submitting}
-                  className="mt-1 flex h-14 items-center justify-center gap-2 rounded-xl bg-gold font-['Archivo_Black'] text-sm uppercase tracking-tight text-primary shadow-lift transition-all hover:bg-gold-soft active:scale-[0.99] disabled:opacity-70"
+                  className="mt-1 flex h-14 items-center justify-center gap-2 rounded-xl bg-primary font-['Oswald'] text-base uppercase tracking-wide text-primary-foreground shadow-lift transition-all hover:bg-navy-deep active:scale-[0.99] disabled:opacity-70"
                 >
                   {submitting ? <Loader2 className="h-5 w-5 animate-spin" /> : <Lock className="h-4 w-4" />}
                   Show My Options
                 </Button>
-                <p className="text-xs leading-relaxed text-navy-foreground/50">
+                <p className="text-xs leading-relaxed text-muted-foreground">
                   By submitting, you agree that Kairos Security may contact you by phone, text, and
                   email about your security options, including using automated technology. Consent
                   is not a condition of purchase. Message and data rates may apply.
@@ -227,7 +227,7 @@ function QuestionStep({
   if (!question) return null;
   return (
     <>
-      <h2 className="px-2 text-center font-['Archivo_Black'] text-2xl uppercase leading-tight tracking-tight text-navy-foreground sm:text-3xl">
+      <h2 className="px-2 text-center font-['Oswald'] font-bold text-2xl leading-tight tracking-tight text-foreground sm:text-3xl">
         {question.question}
       </h2>
       <div className={`mt-8 grid gap-4 ${step === 0 ? "grid-cols-2" : "sm:grid-cols-2"}`}>
@@ -241,23 +241,23 @@ function QuestionStep({
               type="button"
               onClick={() => onAnswer(question.key, option.value, step)}
               aria-pressed={selected}
-              className={`group h-auto whitespace-normal rounded-xl border text-navy-foreground transition-all active:scale-[0.98] hover:text-navy-foreground ${step === 0 ? "min-h-36 flex-col gap-4 px-3 py-6 sm:min-h-40" : "min-h-20 justify-start gap-3 px-4 py-4 text-left"} ${
+              className={`group h-auto whitespace-normal rounded-xl border text-foreground transition-all active:scale-[0.98] hover:text-foreground ${step === 0 ? "min-h-36 flex-col gap-4 px-3 py-6 sm:min-h-40" : "min-h-20 justify-start gap-3 px-4 py-4 text-left"} ${
                 selected
-                  ? "border-gold bg-gold/10"
-                  : "border-navy-foreground/10 bg-navy-foreground/5 hover:border-gold hover:bg-gold/5"
+                  ? "border-primary bg-primary/5"
+                  : "border-border bg-secondary hover:border-primary hover:shadow-soft"
               }`}
             >
               <span
                 className={`flex shrink-0 items-center justify-center rounded-full transition-colors ${step === 0 ? "h-16 w-16 [&_svg]:size-8" : "h-10 w-10"} ${
-                  selected ? "bg-gold/25 text-gold" : "bg-navy-foreground/5 text-gold group-hover:bg-gold/20"
+                  selected ? "bg-primary/15 text-primary" : "bg-secondary text-primary group-hover:bg-primary/10"
                 }`}
               >
                 <Icon className="h-5 w-5" />
               </span>
-              <span className={step === 0 ? "font-['Archivo_Black'] text-sm uppercase tracking-tight sm:text-base" : "text-sm font-semibold sm:text-base"}>
+              <span className={step === 0 ? "font-['Oswald'] font-bold text-sm tracking-tight sm:text-base" : "text-sm font-semibold sm:text-base"}>
                 {option.label}
               </span>
-              {step !== 0 && (selected ? <Check className="ml-auto h-5 w-5 text-gold" /> : <ArrowRight className="ml-auto text-navy-foreground/40" />)}
+              {step !== 0 && (selected ? <Check className="ml-auto h-5 w-5 text-primary" /> : <ArrowRight className="ml-auto text-muted-foreground" />)}
             </Button>
           );
         })}
@@ -286,27 +286,27 @@ function Results({ answers, firstName }: { answers: QuoteAnswers; firstName: str
 
   return (
     <div>
-      <h3 className="font-['Archivo_Black'] text-2xl uppercase tracking-tight text-navy-foreground sm:text-3xl">
+      <h3 className="font-['Oswald'] font-bold text-2xl tracking-tight text-foreground sm:text-3xl">
         {firstName ? `${firstName}, we` : "We"} Found Your Best Starting Point
       </h3>
-      <p className="mt-3 text-sm text-navy-foreground/60 sm:text-base">
+      <p className="mt-3 text-sm text-muted-foreground sm:text-base">
         Based on your answers, a Kairos {property} security package may include:
       </p>
       <ul className="mt-5 grid gap-3">
         {inclusions.map((item) => (
-          <li key={item.label} className="flex items-center gap-3 rounded-xl border border-navy-foreground/10 bg-navy-foreground/5 px-4 py-3">
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gold/15 text-gold">
+          <li key={item.label} className="flex items-center gap-3 rounded-xl border border-border bg-secondary px-4 py-3">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
               <item.icon className="h-4 w-4" />
             </span>
-            <span className="text-sm font-medium text-navy-foreground sm:text-base">{item.label}</span>
+            <span className="text-sm font-medium text-foreground sm:text-base">{item.label}</span>
           </li>
         ))}
       </ul>
-      <div className="mt-6 rounded-xl border border-gold/30 bg-gold/10 p-5 text-center">
-        <p className="font-['Archivo_Black'] text-lg uppercase tracking-tight text-gold sm:text-xl">
+      <div className="mt-6 rounded-xl border border-primary/20 bg-primary/5 p-5 text-center">
+        <p className="font-['Oswald'] font-bold text-lg tracking-tight text-primary sm:text-xl">
           Plans start at $39.99/mo
         </p>
-        <p className="mt-1 text-sm text-navy-foreground/60">
+        <p className="mt-1 text-sm text-muted-foreground">
           Final pricing depends on the equipment and protection your property needs.
         </p>
       </div>
@@ -314,14 +314,14 @@ function Results({ answers, firstName }: { answers: QuoteAnswers; firstName: str
         <a
           href="tel:+12815550134"
           onClick={() => trackEvent("CallCTAClicked", { location: "results" })}
-          className="flex h-14 items-center justify-center rounded-xl bg-gold font-['Archivo_Black'] text-sm uppercase tracking-tight text-primary transition-all hover:bg-gold-soft active:scale-[0.99]"
+          className="flex h-14 items-center justify-center rounded-xl bg-primary font-['Oswald'] text-base uppercase tracking-wide text-primary-foreground transition-all hover:bg-navy-deep active:scale-[0.99]"
         >
           Talk With a Security Specialist
         </a>
         <a
           href="tel:+12815550134"
           onClick={() => trackEvent("CallCTAClicked", { location: "results_secondary" })}
-          className="flex h-14 items-center justify-center rounded-xl border-2 border-gold/50 font-['Archivo_Black'] text-sm uppercase tracking-tight text-gold transition-all hover:bg-gold/10 active:scale-[0.99]"
+          className="flex h-14 items-center justify-center rounded-xl border-2 border-primary font-['Oswald'] text-base uppercase tracking-wide text-primary transition-all hover:bg-primary/5 active:scale-[0.99]"
         >
           Call Me About My Options
         </a>
