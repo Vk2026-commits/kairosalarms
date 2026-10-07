@@ -13,6 +13,7 @@ import {
   X,
 } from "lucide-react";
 import heroImage from "@/assets/hero-home.jpg";
+import logo from "@/assets/kairos-logo.png.asset.json";
 import { QuoteFunnel } from "@/components/QuoteFunnel";
 import { captureAttribution, trackEvent } from "@/lib/tracking";
 import { Button } from "@/components/ui/button";
@@ -56,8 +57,11 @@ function Index() {
       {/* Header */}
       <header className="absolute inset-x-0 top-0 z-20">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-5">
-          <span className="font-['Sora'] text-lg font-bold tracking-tight text-navy-foreground">
-            KAIROS<span className="text-gold"> SECURITY</span>
+          <span className="flex items-center gap-3 font-['Sora'] text-lg font-bold tracking-tight text-navy-foreground">
+            <img src={logo.url} alt="Kairos Security logo" className="h-12 w-auto drop-shadow-md sm:h-14" />
+            <span>
+              KAIROS<span className="text-gold"> SECURITY</span>
+            </span>
           </span>
           <a
             href={`tel:${PHONE}`}
