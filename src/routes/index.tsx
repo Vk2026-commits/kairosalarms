@@ -57,7 +57,7 @@ function Index() {
       <header className="absolute inset-x-0 top-0 z-20">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-5">
           <span className="font-['Sora'] text-lg font-bold tracking-tight text-navy-foreground">
-            KAIROS<span className="text-accent"> SECURITY</span>
+            KAIROS<span className="text-gold"> SECURITY</span>
           </span>
           <a
             href={`tel:${PHONE}`}
@@ -87,7 +87,7 @@ function Index() {
           <div className="animate-fade-up text-center">
             <h1 className="text-3xl leading-tight font-bold text-navy-foreground text-balance sm:text-4xl">
               Home Security Starting at{" "}
-              <span className="text-accent">$39.99/mo</span>
+              <span className="text-gold">$39.99/mo</span>
             </h1>
             <p className="mt-3 text-sm leading-relaxed text-navy-muted sm:text-base">
               Professionally monitored security.{" "}
@@ -176,7 +176,7 @@ function Index() {
             <ul className="mt-5 space-y-3">
               {["No credit check required", "Simple security options", "Local service", "Clear starting price"].map((t) => (
                 <li key={t} className="flex items-center gap-3 font-medium text-navy-foreground">
-                  <Check className="h-5 w-5 shrink-0 text-accent" />
+                  <Check className="h-5 w-5 shrink-0 text-gold" />
                   {t}
                 </li>
               ))}
@@ -224,7 +224,7 @@ function Index() {
           <Button
             type="button"
             onClick={() => startQuote("final_cta")}
-            className="mt-8 h-16 w-full rounded-xl bg-accent px-10 text-lg font-bold text-accent-foreground shadow-lift transition-all hover:brightness-110 active:scale-[0.99] sm:w-auto"
+            className="mt-8 h-16 w-full rounded-xl bg-gold px-10 text-lg font-bold text-foreground shadow-lift transition-all hover:bg-gold/90 active:scale-[0.99] sm:w-auto"
           >
             Find My Security Fit
           </Button>
