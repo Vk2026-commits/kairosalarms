@@ -133,7 +133,6 @@ function Index() {
             { icon: CreditCard, label: "No credit check" },
             { icon: Radio, label: "24/7 monitoring available" },
             { icon: Wrench, label: "Professional installation" },
-            { icon: MapPin, label: "Houston & surrounding areas" },
           ].map((i) => (
             <span key={i.label} className="flex items-center gap-2">
               <i.icon className="h-4 w-4 text-primary" /> {i.label}

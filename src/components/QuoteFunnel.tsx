@@ -195,7 +195,7 @@ export function QuoteFunnel() {
                   <MapPin className="h-3.5 w-3.5 shrink-0 text-primary" />
                   We serve Houston and the surrounding areas.
                 </p>
-                <label className="mt-1 flex items-start gap-3 text-left">
+                <label className="mt-3 flex items-start gap-3 text-left">
                   <input
                     required
                     type="checkbox"
