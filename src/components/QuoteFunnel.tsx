@@ -277,11 +277,8 @@ function Results({ answers, firstName }: { answers: QuoteAnswers; firstName: str
 
   return (
     <div>
-      <p className="text-sm font-semibold tracking-wide text-accent uppercase">
-        {firstName ? `${firstName}, we` : "We"} found your best starting point
-      </p>
-      <h3 className="mt-2 text-2xl font-bold text-foreground sm:text-3xl">
-        We Found Your Best Starting Point
+      <h3 className="text-2xl font-bold text-foreground sm:text-3xl">
+        {firstName ? `${firstName}, we` : "We"} Found Your Best Starting Point
       </h3>
       <p className="mt-3 text-sm text-muted-foreground sm:text-base">
         Based on your answers, a Kairos {property} security package may include:
