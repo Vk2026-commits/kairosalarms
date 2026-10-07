@@ -21,16 +21,16 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Kairos Security — Home Security Starting at $39.99/mo" },
+      { title: "Kairos Security — Home Security in Houston & Surrounding Areas, From $39.99/mo" },
       {
         name: "description",
         content:
-          "Professionally monitored home security starting at $39.99/mo. No credit check required. Get your personalized options in under 60 seconds.",
+          "Professionally monitored home security in Houston and the surrounding areas, starting at $39.99/mo. No credit check required. See your options in under 60 seconds.",
       },
-      { property: "og:title", content: "Kairos Security — Home Security Starting at $39.99/mo" },
+      { property: "og:title", content: "Kairos Security — Home Security in Houston & Surrounding Areas, From $39.99/mo" },
       {
         property: "og:description",
-        content: "Professional alarm monitoring with no credit check required. See your options in 60 seconds.",
+        content: "Local Houston-area alarm monitoring with no credit check required. See your options in 60 seconds.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -66,7 +66,7 @@ function Index() {
         {/* Utility bar */}
         <div className="relative z-10 border-b border-primary-foreground/10 text-[11px] text-primary-foreground/70">
           <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-2">
-            <span className="flex items-center gap-1.5"><MapPin className="h-3 w-3" /> Locally owned · Monitored 24/7</span>
+            <span className="flex items-center gap-1.5"><MapPin className="h-3 w-3" /> Locally owned · Serving Houston & surrounding areas</span>
             <span className="hidden items-center gap-1.5 sm:flex"><Phone className="h-3 w-3" /> (281) 555-0134</span>
           </div>
         </div>
@@ -102,6 +102,10 @@ function Index() {
             <p className="mt-5 max-w-lg text-base text-primary-foreground/75 sm:text-lg">
               Monitored alarms, doorbell cameras, and smart sensors — starting at{" "}
               <span className="font-bold text-primary-foreground">$39.99/mo</span>, with no credit check required.
+            </p>
+            <p className="mt-5 flex items-center gap-2 text-sm font-semibold text-primary-foreground/85">
+              <MapPin className="h-4 w-4 shrink-0 text-gold-soft" />
+              Serving Houston and the surrounding areas
             </p>
             <div className="mt-8 hidden gap-3 sm:grid sm:grid-cols-2 sm:max-w-md">
               {[
@@ -147,7 +151,7 @@ function Index() {
           <div className="mt-12 grid gap-5 sm:grid-cols-2">
             {[
               { icon: CreditCard, title: "No Credit Check", body: "Get pricing and security options without going through a credit qualification process." },
-              { icon: MapPin, title: "Local Security Professionals", body: "Work with a local company instead of a national call center." },
+              { icon: MapPin, title: "Local Security Professionals", body: "Based in Houston, we install and service systems across the metro and nearby towns — not a national call center." },
               { icon: Radio, title: "Professional Monitoring", body: "Get around-the-clock protection and support." },
               { icon: Settings2, title: "Options Built Around Your Property", body: "Choose the protection you need without paying for unnecessary equipment." },
             ].map((b) => (
@@ -173,7 +177,7 @@ function Index() {
             {[
               { title: "Answer 3 Quick Questions", body: "Tell us about your property in under 60 seconds." },
               { title: "Get Your Options", body: "See a setup and starting price built around your needs." },
-              { title: "Professional Install", body: "A local Kairos technician installs and activates your system." },
+              { title: "Professional Install", body: "A Houston-area Kairos technician installs and activates your system." },
             ].map((s, i) => (
               <div key={s.title} className="flex flex-col items-center">
                 <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary font-['Plus_Jakarta_Sans'] font-extrabold text-lg font-bold text-primary-foreground">
@@ -245,7 +249,7 @@ function Index() {
         <h2 className="font-['Plus_Jakarta_Sans'] font-extrabold text-3xl font-bold tracking-tight sm:text-5xl">
           See What Home Security Could Cost You
         </h2>
-        <p className="mt-4 text-lg opacity-80">Starting at $39.99/mo with no credit check required.</p>
+        <p className="mt-4 text-lg opacity-80">Starting at $39.99/mo with no credit check required. Serving Houston and surrounding areas.</p>
         <Button
           type="button"
           onClick={() => startQuote("final_cta")}
@@ -254,8 +258,11 @@ function Index() {
           Find My Security Fit →
         </Button>
       </section>
-      <footer className="bg-navy-deep px-5 py-6 text-center text-xs text-primary-foreground/70">
-        © {new Date().getFullYear()} Kairos Security. All rights reserved.
+      <footer className="bg-navy-deep px-5 py-7 text-center text-xs text-primary-foreground/70">
+        <p className="flex items-center justify-center gap-1.5 font-semibold text-primary-foreground/85">
+          <MapPin className="h-3.5 w-3.5" /> Proudly serving Houston and the surrounding areas
+        </p>
+        <p className="mt-2">© {new Date().getFullYear()} Kairos Security. All rights reserved.</p>
       </footer>
     </div>
   );
