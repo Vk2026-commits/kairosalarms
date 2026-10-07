@@ -69,7 +69,8 @@ export function QuoteFunnel({ started, onStart }: { started: boolean; onStart: (
 
   function answer(key: keyof QuoteAnswers, value: string, questionIndex: number) {
     setAnswers((prev) => ({ ...prev, [key]: value }));
-    trackEvent(QUESTION_EVENTS[questionIndex], { [key]: value });
+    const event = QUESTION_EVENTS[questionIndex];
+    if (event) trackEvent(event, { [key]: value });
     // Auto-advance after a single-choice answer.
     window.setTimeout(() => setStep((questionIndex + 1) as Step), 220);
   }

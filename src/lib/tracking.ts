@@ -40,7 +40,7 @@ declare global {
 
 function readCookie(name: string): string | undefined {
   const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
-  return match ? decodeURIComponent(match[1]) : undefined;
+  return match?.[1] ? decodeURIComponent(match[1]) : undefined;
 }
 
 export function captureAttribution(): Attribution {
