@@ -21,6 +21,8 @@ export interface LeadPayload extends QuoteAnswers {
   phone: string;
   email: string;
   zip: string;
+  /** Express written consent to be called/texted (TCPA). */
+  callConsent: boolean;
 }
 
 export async function submitLead(payload: LeadPayload): Promise<void> {
