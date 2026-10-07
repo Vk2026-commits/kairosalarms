@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Render the quote diagnostic directly in the opening section and track QuoteStarted on the first answer, so visitors enter the existing frontend-only flow without a start-button gate.

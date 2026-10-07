@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   BadgeCheck,
   Check,
@@ -15,6 +15,7 @@ import {
 import heroImage from "@/assets/hero-home.jpg";
 import { QuoteFunnel } from "@/components/QuoteFunnel";
 import { captureAttribution, trackEvent } from "@/lib/tracking";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -40,8 +41,6 @@ export const Route = createFileRoute("/")({
 const PHONE = "+12815550134";
 
 function Index() {
-  const [started, setStarted] = useState(false);
-
   useEffect(() => {
     captureAttribution();
     trackEvent("PageView");
@@ -49,15 +48,11 @@ function Index() {
 
   function startQuote(location: string) {
     trackEvent("CTAClick", { location });
-    if (!started) trackEvent("QuoteStarted", { location });
-    setStarted(true);
-    window.setTimeout(() => {
-      document.getElementById("quote")?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 50);
+    document.getElementById("quote")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   return (
-    <div className="min-h-screen pb-24 md:pb-0">
+    <div className="min-h-screen">
       {/* Header */}
       <header className="absolute inset-x-0 top-0 z-20">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-5">
@@ -88,28 +83,18 @@ function Index() {
         <div className="absolute inset-0 bg-gradient-to-r from-navy-deep via-navy-deep/85 to-navy-deep/30" />
         <div className="absolute inset-0 bg-gradient-to-t from-navy-deep via-transparent to-navy-deep/50" />
 
-        <div className="relative mx-auto max-w-6xl px-5 pt-28 pb-14 sm:pt-36 sm:pb-20">
-          <div className="max-w-xl animate-fade-up">
-            <p className="inline-flex items-center gap-2 rounded-full bg-navy-foreground/10 px-3 py-1.5 text-xs font-semibold text-navy-foreground backdrop-blur">
-              <MapPin className="h-3.5 w-3.5 text-accent" />
-              Local installation &amp; support
-            </p>
-            <h1 className="mt-5 text-4xl leading-[1.08] font-bold text-navy-foreground text-balance sm:text-6xl">
-              Protect Your Home Starting at{" "}
+        <div className="relative mx-auto max-w-2xl px-5 pt-24 pb-12 sm:pt-28 sm:pb-14">
+          <div className="animate-fade-up text-center">
+            <h1 className="text-3xl leading-tight font-bold text-navy-foreground text-balance sm:text-4xl">
+              Home Security Starting at{" "}
               <span className="text-accent">$39.99/mo</span>
             </h1>
-            <p className="mt-5 text-lg leading-relaxed text-navy-muted sm:text-xl">
+            <p className="mt-3 text-sm leading-relaxed text-navy-muted sm:text-base">
               Professionally monitored security.{" "}
               <span className="font-semibold text-navy-foreground">No credit check required.</span>
             </p>
-            <button
-              type="button"
-              onClick={() => startQuote("hero")}
-              className="mt-8 flex h-16 w-full items-center justify-center rounded-xl bg-accent px-10 text-lg font-bold text-accent-foreground shadow-lift transition-all hover:brightness-110 active:scale-[0.99] sm:w-auto"
-            >
-              See My Options
-            </button>
-            <p className="mt-3 text-sm text-navy-muted">Get your options in under 60 seconds.</p>
+            <div className="mt-6"><QuoteFunnel /></div>
+            <p className="mt-4 text-xs text-navy-muted">Local installation &amp; support · Personalized to your property</p>
           </div>
         </div>
       </section>
@@ -131,11 +116,6 @@ function Index() {
             </div>
           ))}
         </div>
-      </section>
-
-      {/* Quote funnel */}
-      <section className="mx-auto max-w-2xl px-5 py-12 sm:py-16">
-        <QuoteFunnel started={started} onStart={() => startQuote("funnel_card")} />
       </section>
 
       {/* Why Kairos */}
@@ -241,29 +221,19 @@ function Index() {
           <p className="mt-4 text-lg text-navy-muted">
             Starting at $39.99/mo with no credit check required.
           </p>
-          <button
+          <Button
             type="button"
             onClick={() => startQuote("final_cta")}
             className="mt-8 h-16 w-full rounded-xl bg-accent px-10 text-lg font-bold text-accent-foreground shadow-lift transition-all hover:brightness-110 active:scale-[0.99] sm:w-auto"
           >
-            See My Options
-          </button>
+            Find My Security Fit
+          </Button>
         </div>
         <footer className="border-t border-navy-foreground/10 px-5 py-6 text-center text-xs text-navy-muted">
           © {new Date().getFullYear()} Kairos Security. All rights reserved.
         </footer>
       </section>
 
-      {/* Sticky mobile CTA */}
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-card/95 p-3 backdrop-blur md:hidden">
-        <button
-          type="button"
-          onClick={() => startQuote("sticky_mobile")}
-          className="h-14 w-full rounded-xl bg-accent text-base font-bold text-accent-foreground"
-        >
-          See My Options
-        </button>
-      </div>
     </div>
   );
 }
