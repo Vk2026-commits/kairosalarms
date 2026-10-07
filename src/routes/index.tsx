@@ -13,6 +13,7 @@ import {
   X,
 } from "lucide-react";
 import logo from "@/assets/kairos-logo.png.asset.json";
+import heroImg from "@/assets/hero-home.jpg";
 import { QuoteFunnel } from "@/components/QuoteFunnel";
 import { captureAttribution, trackEvent } from "@/lib/tracking";
 import { Button } from "@/components/ui/button";
@@ -175,7 +176,7 @@ function Index() {
               { title: "Professional Install", body: "A local Kairos technician installs and activates your system." },
             ].map((s, i) => (
               <div key={s.title} className="flex flex-col items-center">
-                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary font-['Oswald'] text-lg font-bold text-primary-foreground">
+                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary font-['Plus_Jakarta_Sans'] font-extrabold text-lg font-bold text-primary-foreground">
                   {i + 1}
                 </span>
                 <h3 className={`${H} mt-5 text-xl`}>{s.title}</h3>
@@ -192,7 +193,7 @@ function Index() {
           <h2 className={`${H} text-center text-3xl sm:text-5xl`}>The Kairos Difference</h2>
           <div className="mt-12 grid gap-5 md:grid-cols-2">
             <div className="rounded-xl border border-border bg-card p-7">
-              <h3 className="font-['Oswald'] text-lg font-semibold uppercase tracking-wide text-muted-foreground">
+              <h3 className="font-['Plus_Jakarta_Sans'] font-extrabold text-lg font-semibold uppercase tracking-wide text-muted-foreground">
                 Big National Companies
               </h3>
               <ul className="mt-5 space-y-4">
@@ -204,7 +205,7 @@ function Index() {
               </ul>
             </div>
             <div className="rounded-xl border-2 border-primary bg-card p-7 shadow-lift">
-              <h3 className="font-['Oswald'] text-lg font-semibold uppercase tracking-wide text-primary">
+              <h3 className="font-['Plus_Jakarta_Sans'] font-extrabold text-lg font-semibold uppercase tracking-wide text-primary">
                 Kairos Security
               </h3>
               <ul className="mt-5 space-y-4">
@@ -241,14 +242,14 @@ function Index() {
 
       {/* Final CTA */}
       <section className="bg-primary px-5 py-16 text-center text-primary-foreground sm:py-20">
-        <h2 className="font-['Oswald'] text-3xl font-bold tracking-tight sm:text-5xl">
+        <h2 className="font-['Plus_Jakarta_Sans'] font-extrabold text-3xl font-bold tracking-tight sm:text-5xl">
           See What Home Security Could Cost You
         </h2>
         <p className="mt-4 text-lg opacity-80">Starting at $39.99/mo with no credit check required.</p>
         <Button
           type="button"
           onClick={() => startQuote("final_cta")}
-          className="mt-8 h-14 w-full rounded-lg bg-card px-10 font-['Oswald'] text-lg font-semibold uppercase tracking-wide text-primary hover:bg-secondary sm:w-auto"
+          className="mt-8 h-14 w-full rounded-lg bg-card px-10 font-['Plus_Jakarta_Sans'] font-extrabold text-lg font-semibold uppercase tracking-wide text-primary hover:bg-secondary sm:w-auto"
         >
           Find My Security Fit →
         </Button>
