@@ -99,7 +99,7 @@ export function QuoteFunnel() {
 
   return (
     <div ref={containerRef} id="quote" className="scroll-mt-6 text-left">
-      <div className="relative overflow-hidden rounded-2xl border border-border bg-card shadow-lift">
+      <div className="relative overflow-hidden rounded-2xl border border-border bg-card shadow-2xl">
         {/* Gold progress bar */}
         {step < 4 && (
           <div className="absolute top-0 left-0 h-1 w-full bg-secondary">
@@ -143,7 +143,7 @@ export function QuoteFunnel() {
                 <span className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary">
                   <Check className="h-6 w-6" />
                 </span>
-                <h3 className="font-['Oswald'] font-bold text-xl tracking-tight text-foreground sm:text-2xl">
+                <h3 className="font-['Plus_Jakarta_Sans'] font-extrabold font-bold text-xl tracking-tight text-foreground sm:text-2xl">
                   Your Security Options Are Ready
                 </h3>
               </div>
@@ -193,7 +193,7 @@ export function QuoteFunnel() {
                 <Button
                   type="submit"
                   disabled={submitting}
-                  className="mt-1 flex h-14 items-center justify-center gap-2 rounded-xl bg-primary font-['Oswald'] text-base uppercase tracking-wide text-primary-foreground shadow-lift transition-all hover:bg-navy-deep active:scale-[0.99] disabled:opacity-70"
+                  className="mt-1 flex h-14 items-center justify-center gap-2 rounded-xl bg-primary font-['Plus_Jakarta_Sans'] font-extrabold text-base uppercase tracking-wide text-primary-foreground shadow-lift transition-all hover:bg-navy-deep active:scale-[0.99] disabled:opacity-70"
                 >
                   {submitting ? <Loader2 className="h-5 w-5 animate-spin" /> : <Lock className="h-4 w-4" />}
                   Show My Options
@@ -227,7 +227,7 @@ function QuestionStep({
   if (!question) return null;
   return (
     <>
-      <h2 className="px-2 text-center font-['Oswald'] font-bold text-2xl leading-tight tracking-tight text-foreground sm:text-3xl">
+      <h2 className="px-2 text-center font-['Plus_Jakarta_Sans'] font-extrabold font-bold text-2xl leading-tight tracking-tight text-foreground sm:text-3xl">
         {question.question}
       </h2>
       <div className={`mt-8 grid gap-4 ${step === 0 ? "grid-cols-2" : "sm:grid-cols-2"}`}>
@@ -254,7 +254,7 @@ function QuestionStep({
               >
                 <Icon className="h-5 w-5" />
               </span>
-              <span className={step === 0 ? "font-['Oswald'] font-bold text-sm tracking-tight sm:text-base" : "text-sm font-semibold sm:text-base"}>
+              <span className={step === 0 ? "font-['Plus_Jakarta_Sans'] font-extrabold font-bold text-sm tracking-tight sm:text-base" : "text-sm font-semibold sm:text-base"}>
                 {option.label}
               </span>
               {step !== 0 && (selected ? <Check className="ml-auto h-5 w-5 text-primary" /> : <ArrowRight className="ml-auto text-muted-foreground" />)}
@@ -286,7 +286,7 @@ function Results({ answers, firstName }: { answers: QuoteAnswers; firstName: str
 
   return (
     <div>
-      <h3 className="font-['Oswald'] font-bold text-2xl tracking-tight text-foreground sm:text-3xl">
+      <h3 className="font-['Plus_Jakarta_Sans'] font-extrabold font-bold text-2xl tracking-tight text-foreground sm:text-3xl">
         {firstName ? `${firstName}, we` : "We"} Found Your Best Starting Point
       </h3>
       <p className="mt-3 text-sm text-muted-foreground sm:text-base">
@@ -303,7 +303,7 @@ function Results({ answers, firstName }: { answers: QuoteAnswers; firstName: str
         ))}
       </ul>
       <div className="mt-6 rounded-xl border border-primary/20 bg-primary/5 p-5 text-center">
-        <p className="font-['Oswald'] font-bold text-lg tracking-tight text-primary sm:text-xl">
+        <p className="font-['Plus_Jakarta_Sans'] font-extrabold font-bold text-lg tracking-tight text-primary sm:text-xl">
           Plans start at $39.99/mo
         </p>
         <p className="mt-1 text-sm text-muted-foreground">
@@ -314,14 +314,14 @@ function Results({ answers, firstName }: { answers: QuoteAnswers; firstName: str
         <a
           href="tel:+12815550134"
           onClick={() => trackEvent("CallCTAClicked", { location: "results" })}
-          className="flex h-14 items-center justify-center rounded-xl bg-primary font-['Oswald'] text-base uppercase tracking-wide text-primary-foreground transition-all hover:bg-navy-deep active:scale-[0.99]"
+          className="flex h-14 items-center justify-center rounded-xl bg-primary font-['Plus_Jakarta_Sans'] font-extrabold text-base uppercase tracking-wide text-primary-foreground transition-all hover:bg-navy-deep active:scale-[0.99]"
         >
           Talk With a Security Specialist
         </a>
         <a
           href="tel:+12815550134"
           onClick={() => trackEvent("CallCTAClicked", { location: "results_secondary" })}
-          className="flex h-14 items-center justify-center rounded-xl border-2 border-primary font-['Oswald'] text-base uppercase tracking-wide text-primary transition-all hover:bg-primary/5 active:scale-[0.99]"
+          className="flex h-14 items-center justify-center rounded-xl border-2 border-primary font-['Plus_Jakarta_Sans'] font-extrabold text-base uppercase tracking-wide text-primary transition-all hover:bg-primary/5 active:scale-[0.99]"
         >
           Call Me About My Options
         </a>
