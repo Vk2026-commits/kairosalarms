@@ -1,14 +1,13 @@
 /**
  * Lead persistence for the Kairos quote funnel.
  *
- * Lovable Cloud is intentionally NOT connected. When the user connects
- * their own Supabase project, replace the body of `submitLead` with an
- * insert into their leads table (and optionally a Conversions API call).
- * Until then, leads are kept in memory and logged so the funnel is fully
- * testable end to end.
+ * Leads are saved to the user's own Supabase project (KAIROS_SUPABASE_URL)
+ * through the `saveLead` server function, which inserts into the `leads`
+ * table with the service key kept server-side.
  */
 
 import { getAttribution } from "./tracking";
+import { saveLead } from "./leads.functions";
 
 export interface QuoteAnswers {
   propertyType?: string;
@@ -26,12 +25,10 @@ export interface LeadPayload extends QuoteAnswers {
 }
 
 export async function submitLead(payload: LeadPayload): Promise<void> {
-  const lead = {
-    ...payload,
-    attribution: getAttribution(),
-    submittedAt: new Date().toISOString(),
-  };
-
-  // TODO(supabase): insert `lead` into the user's own Supabase `leads` table.
-  console.info("[kairos] lead captured (not yet persisted):", lead);
+  await saveLead({
+    data: {
+      ...payload,
+      attribution: getAttribution() as Record<string, unknown>,
+    },
+  });
 }
