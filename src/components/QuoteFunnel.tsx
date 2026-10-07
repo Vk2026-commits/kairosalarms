@@ -132,41 +132,7 @@ export function QuoteFunnel({ started, onStart }: { started: boolean; onStart: (
         )}
 
         <div key={step} className="animate-funnel-in p-5 sm:p-8">
-          {step <= 2 && (
-            <>
-              <h3 className="text-xl font-bold text-foreground sm:text-2xl">
-                {QUESTIONS[step].question}
-              </h3>
-              <div className={`mt-5 grid gap-3 ${QUESTIONS[step].options.length === 2 ? "sm:grid-cols-2" : "sm:grid-cols-2"}`}>
-                {QUESTIONS[step].options.map((option) => {
-                  const Icon = option.icon;
-                  const selected = answers[QUESTIONS[step].key] === option.value;
-                  return (
-                    <button
-                      key={option.value}
-                      type="button"
-                      onClick={() => answer(QUESTIONS[step].key, option.value, step)}
-                      className={`flex min-h-16 items-center gap-4 rounded-xl border-2 px-5 py-4 text-left text-base font-semibold transition-all active:scale-[0.98] ${
-                        selected
-                          ? "border-accent bg-accent/5 text-foreground"
-                          : "border-border bg-background text-foreground hover:border-accent/50 hover:bg-secondary"
-                      }`}
-                    >
-                      <span
-                        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${
-                          selected ? "bg-accent text-accent-foreground" : "bg-secondary text-primary"
-                        }`}
-                      >
-                        <Icon className="h-5 w-5" />
-                      </span>
-                      {option.label}
-                      {selected && <Check className="ml-auto h-5 w-5 text-accent" />}
-                    </button>
-                  );
-                })}
-              </div>
-            </>
-          )}
+          {step <= 2 && <QuestionStep step={step} answers={answers} onAnswer={answer} />}
 
           {step === 3 && (
             <>
