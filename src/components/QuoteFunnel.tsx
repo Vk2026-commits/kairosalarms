@@ -60,7 +60,7 @@ const QUESTION_EVENTS = ["Question1Completed", "Question2Completed", "Question3C
 export function QuoteFunnel() {
   const [step, setStep] = useState<Step>(0);
   const [answers, setAnswers] = useState<QuoteAnswers>({});
-  const [form, setForm] = useState({ firstName: "", phone: "", email: "", zip: "" });
+  const [form, setForm] = useState({ firstName: "", phone: "", email: "", zip: "", callConsent: false });
   const [submitting, setSubmitting] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const hasStarted = useRef(false);
