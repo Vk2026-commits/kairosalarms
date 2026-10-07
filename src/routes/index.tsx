@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import logo from "@/assets/kairos-logo.png.asset.json";
 import heroImg from "@/assets/hero-home.jpg";
+import installImg from "@/assets/install.jpg";
 import { QuoteFunnel } from "@/components/QuoteFunnel";
 import { captureAttribution, trackEvent } from "@/lib/tracking";
 import { Button } from "@/components/ui/button";
@@ -173,6 +174,14 @@ function Index() {
       <section className="px-5 py-16 sm:py-24">
         <div className="mx-auto max-w-5xl text-center">
           <h2 className={`${H} text-3xl sm:text-5xl`}>How It Works</h2>
+          <img
+            src={installImg}
+            alt="Kairos technician installing a home security panel for a Houston-area homeowner"
+            loading="lazy"
+            width={1600}
+            height={912}
+            className="mt-10 aspect-[16/9] w-full rounded-2xl object-cover shadow-lift"
+          />
           <div className="mt-12 grid gap-10 sm:grid-cols-3">
             {[
               { title: "Answer 3 Quick Questions", body: "Tell us about your property in under 60 seconds." },
