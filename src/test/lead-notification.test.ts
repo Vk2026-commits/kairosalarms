@@ -46,6 +46,9 @@ describe("Kairos lead emails", () => {
     expect(content.html).toContain("A Kairos Security specialist will call you soon");
     expect(content.html).toContain("Alarm + security cameras");
     expect(content.html).toContain("tel:+12815550134");
+    expect(content.html).toContain("Security options start at");
+    expect(content.html).toContain("$39.99/mo");
+    expect(content.html).not.toContain("There is no obligation to purchase");
     expect(content.text).toContain("REQUEST RECEIVED");
     expect(content.text).not.toContain("Contact consent");
   });

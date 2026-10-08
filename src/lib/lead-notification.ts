@@ -228,7 +228,7 @@ export function renderCustomerConfirmation(lead: LeadNotificationInput): {
                   <p style="margin: 0; color: #7a2428; font-size: 11px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;">Your requested protection</p>
                   <p style="margin: 7px 0 0; color: #241517; font-size: 17px; font-weight: 700;">${escapeHtml(securityType)}</p>
                 </div>
-                <p style="margin: 0; color: #59484b; font-size: 15px; line-height: 1.65;">There is no obligation to purchase. We are here to help you choose the security setup that fits your needs.</p>
+                <p style="margin: 0; color: #59484b; font-size: 15px; line-height: 1.65;">Security options start at <strong style="color: #470101;">$39.99/mo</strong> with no credit check required. Your Kairos Security specialist will confirm the setup and pricing that fit your property.</p>
                 <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin-top: 26px;">
                   <tr>
                     <td style="border-radius: 9px; background: #470101;">
@@ -258,7 +258,8 @@ export function renderCustomerConfirmation(lead: LeadNotificationInput): {
     "",
     `Requested protection: ${securityType}`,
     "",
-    "There is no obligation to purchase. Reply to this email if you have questions.",
+    "Security options start at $39.99/mo with no credit check required. Your Kairos Security specialist will confirm the setup and pricing that fit your property.",
+    "Reply to this email if you have questions.",
   ].join("\n");
 
   return { html, text };
