@@ -25,9 +25,12 @@ npm i
 npm run dev
 ```
 
-## Lead callback email notifications
+## Lead email notifications
 
-Every completed quote request is first saved to the configured Supabase `leads` table, then sent as a branded **Kairos Security Protection Plan** callback alert to `staylor@kariossecurity.com`. The alert includes the prospect's contact details, property answers, recorded contact consent, and one-click call/email actions. Its `Reply-To` is set to the prospect's email address.
+Every completed quote request is first saved to the configured Supabase `leads` table, then sends two branded **Kairos Security Protection Plan** emails:
+
+1. A callback alert to `staylor@kariossecurity.com`, including the prospect's contact details, property answers, recorded contact consent, and one-click call/email actions. Its `Reply-To` is set to the prospect's email address.
+2. A customer confirmation to the prospect, thanking them, confirming the request was received, and explaining that a Kairos Security specialist will call soon. Its `Reply-To` is the Kairos callback inbox.
 
 Set these **server-only** environment variables in the deployment that runs the TanStack Start server function; never expose them as `VITE_*` variables or commit them to Git:
 
@@ -38,4 +41,4 @@ Set these **server-only** environment variables in the deployment that runs the 
 | `KAIROS_RESEND_API_KEY` | Resend API key used only on the server. |
 | `KAIROS_RESEND_FROM` | Branded sender, for example `Kairos Security Protection Plan <leads@your-verified-domain.com>`. |
 
-Before enabling live traffic, add and verify the sender domain in Resend. Resend requires a verified domain for production sending. The server uses a unique `Idempotency-Key` for each browser submission, so a retry within 24 hours does not send a duplicate callback email.
+Before enabling live traffic, add and verify the sender domain in Resend. Resend requires a verified domain for production sending. The server uses separate `Idempotency-Key` values for each internal alert and customer confirmation, so a retry within 24 hours does not send duplicate emails.

@@ -14,8 +14,19 @@ type ResendResponse = {
   id?: string;
 };
 
+type ResendEmailPayload = {
+  from: string;
+  to: string[];
+  reply_to: string;
+  subject: string;
+  html: string;
+  text: string;
+  tags: { name: string; value: string }[];
+};
+
 const LEAD_RECIPIENT = "staylor@kariossecurity.com";
 const BRAND_NAME = "Kairos Security Protection Plan";
+const KAIROS_SECURITY_PHONE = "+12815550134";
 
 function getRequiredEnvironmentVariable(name: string): string {
   const value = process.env[name]?.trim();
@@ -71,6 +82,7 @@ function renderDetailRow(label: string, value: string): string {
     </tr>`;
 }
 
+/** Branded callback brief sent to the Kairos team. */
 export function renderLeadNotification(lead: LeadNotificationInput): {
   html: string;
   text: string;
@@ -79,9 +91,7 @@ export function renderLeadNotification(lead: LeadNotificationInput): {
   const exteriorDoors = labelExteriorDoors(lead.exteriorDoors);
   const securityType = labelSecurityType(lead.securityType);
   const safeFirstName = escapeHtml(lead.firstName);
-  const safePhone = escapeHtml(lead.phone);
   const safeEmail = escapeHtml(lead.email);
-  const safeZip = escapeHtml(lead.zip);
   const callHref = `tel:${phoneHref(lead.phone)}`;
   const emailHref = `mailto:${encodeURIComponent(lead.email)}`;
 
@@ -172,35 +182,148 @@ export function renderLeadNotification(lead: LeadNotificationInput): {
   return { html, text };
 }
 
-export async function sendLeadNotification(lead: LeadNotificationInput): Promise<{ id?: string }> {
-  const apiKey = getRequiredEnvironmentVariable("KAIROS_RESEND_API_KEY");
-  const from = getRequiredEnvironmentVariable("KAIROS_RESEND_FROM");
-  const content = renderLeadNotification(lead);
+/** Branded confirmation sent to the prospect after the team callback alert succeeds. */
+export function renderCustomerConfirmation(lead: LeadNotificationInput): {
+  html: string;
+  text: string;
+} {
+  const safeFirstName = escapeHtml(lead.firstName);
+  const propertyType = labelPropertyType(lead.propertyType);
+  const securityType = labelSecurityType(lead.securityType);
+  const propertySummary =
+    propertyType === "Not provided" ? "your property" : `your ${propertyType.toLowerCase()}`;
+
+  const html = `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>We received your Kairos Security request</title>
+  </head>
+  <body style="margin: 0; padding: 0; background: #f6f3f4; color: #241517; font-family: Inter, Arial, sans-serif;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background: #f6f3f4; padding: 32px 16px;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width: 640px; background: #ffffff; border: 1px solid #eadfe1; border-radius: 18px; overflow: hidden;">
+            <tr>
+              <td style="height: 6px; background: #470101; font-size: 0; line-height: 0;">&nbsp;</td>
+            </tr>
+            <tr>
+              <td style="background: #2f0506; padding: 28px 32px;">
+                <p style="margin: 0; color: #e7bd54; font-size: 11px; font-weight: 800; letter-spacing: 0.19em; text-transform: uppercase;">Request received</p>
+                <h1 style="margin: 9px 0 0; color: #ffffff; font-family: 'Plus Jakarta Sans', Inter, Arial, sans-serif; font-size: 26px; line-height: 1.2;">Kairos Security<br />Protection Plan</h1>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 32px;">
+                <h2 style="margin: 0; color: #241517; font-family: 'Plus Jakarta Sans', Inter, Arial, sans-serif; font-size: 26px; line-height: 1.25;">Thanks, ${safeFirstName} — we received your request.</h2>
+                <p style="margin: 18px 0 0; color: #59484b; font-size: 16px; line-height: 1.65;">A Kairos Security specialist will call you soon to talk through protection options for ${escapeHtml(propertySummary)} and answer your questions.</p>
+                <div style="margin: 24px 0; border: 1px solid #eadfe1; border-radius: 12px; background: #fbf8f8; padding: 18px 20px;">
+                  <p style="margin: 0; color: #7a2428; font-size: 11px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;">Your requested protection</p>
+                  <p style="margin: 7px 0 0; color: #241517; font-size: 17px; font-weight: 700;">${escapeHtml(securityType)}</p>
+                </div>
+                <p style="margin: 0; color: #59484b; font-size: 15px; line-height: 1.65;">There is no obligation to purchase. We are here to help you choose the security setup that fits your needs.</p>
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin-top: 26px;">
+                  <tr>
+                    <td style="border-radius: 9px; background: #470101;">
+                      <a href="tel:${KAIROS_SECURITY_PHONE}" style="display: inline-block; padding: 13px 20px; color: #ffffff; font-size: 14px; font-weight: 800; text-decoration: none;">Call Kairos Security</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 20px 32px; background: #fbf8f8; border-top: 1px solid #eadfe1;">
+                <p style="margin: 0; color: #846f73; font-size: 12px; line-height: 1.5;">You are receiving this confirmation because you asked ${BRAND_NAME} to contact you about security options. Questions? Reply to this email and our team will be happy to help.</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>`;
+
+  const text = [
+    "KAIROS SECURITY PROTECTION PLAN — REQUEST RECEIVED",
+    "",
+    `Thanks, ${lead.firstName} — we received your request.`,
+    `A Kairos Security specialist will call you soon to talk through protection options for ${propertySummary} and answer your questions.`,
+    "",
+    `Requested protection: ${securityType}`,
+    "",
+    "There is no obligation to purchase. Reply to this email if you have questions.",
+  ].join("\n");
+
+  return { html, text };
+}
+
+async function sendResendEmail(
+  apiKey: string,
+  payload: ResendEmailPayload,
+  idempotencyKey: string,
+  emailType: "internal" | "customer",
+): Promise<ResendResponse> {
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
-      "Idempotency-Key": `kairos-lead/${lead.submissionId}`,
+      "Idempotency-Key": idempotencyKey,
     },
-    body: JSON.stringify({
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    console.error("Resend lead email failed", { emailType, status: response.status });
+    throw new Error("Lead email could not be sent.");
+  }
+
+  return (await response.json().catch(() => ({}))) as ResendResponse;
+}
+
+/** Sends the internal callback alert and the prospect's confirmation email. */
+export async function sendLeadEmails(
+  lead: LeadNotificationInput,
+): Promise<{ internal: ResendResponse; customer: ResendResponse }> {
+  const apiKey = getRequiredEnvironmentVariable("KAIROS_RESEND_API_KEY");
+  const from = getRequiredEnvironmentVariable("KAIROS_RESEND_FROM");
+  const internalContent = renderLeadNotification(lead);
+  const internal = await sendResendEmail(
+    apiKey,
+    {
       from,
       to: [LEAD_RECIPIENT],
       reply_to: lead.email,
       subject: `New Kairos Security lead — ${lead.firstName}`,
-      html: content.html,
-      text: content.text,
+      html: internalContent.html,
+      text: internalContent.text,
       tags: [
         { name: "category", value: "security-lead" },
         { name: "submission_id", value: lead.submissionId },
       ],
-    }),
-  });
+    },
+    `kairos-lead-internal/${lead.submissionId}`,
+    "internal",
+  );
+  const customerContent = renderCustomerConfirmation(lead);
+  const customer = await sendResendEmail(
+    apiKey,
+    {
+      from,
+      to: [lead.email],
+      reply_to: LEAD_RECIPIENT,
+      subject: "Thanks — Kairos Security received your request",
+      html: customerContent.html,
+      text: customerContent.text,
+      tags: [
+        { name: "category", value: "security-lead-confirmation" },
+        { name: "submission_id", value: lead.submissionId },
+      ],
+    },
+    `kairos-lead-confirmation/${lead.submissionId}`,
+    "customer",
+  );
 
-  if (!response.ok) {
-    console.error("Resend lead notification failed", { status: response.status });
-    throw new Error("Lead notification could not be sent.");
-  }
-
-  return (await response.json().catch(() => ({}))) as ResendResponse;
+  return { internal, customer };
 }

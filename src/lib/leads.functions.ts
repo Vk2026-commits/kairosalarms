@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { sendLeadNotification } from "./lead-notification";
+import { sendLeadEmails } from "./lead-notification";
 
 const leadSchema = z.object({
   submissionId: z.string().uuid(),
@@ -17,8 +17,8 @@ const leadSchema = z.object({
 
 /**
  * Inserts a quote-funnel lead into the user's own Supabase `leads` table,
- * then sends the callback alert through Resend. Both provider keys remain
- * server-side and never reach the browser.
+ * then sends the callback alert and prospect confirmation through Resend.
+ * Both provider keys remain server-side and never reach the browser.
  */
 export const saveLead = createServerFn({ method: "POST" })
   .inputValidator((data) => leadSchema.parse(data))
@@ -52,6 +52,6 @@ export const saveLead = createServerFn({ method: "POST" })
       throw new Error(`Lead insert failed (${res.status}): ${body}`);
     }
 
-    await sendLeadNotification(data);
+    await sendLeadEmails(data);
     return { ok: true };
   });
