@@ -16,6 +16,8 @@ export interface QuoteAnswers {
 }
 
 export interface LeadPayload extends QuoteAnswers {
+  /** UUID reused for safe retry handling in the notification provider. */
+  submissionId: string;
   firstName: string;
   phone: string;
   email: string;

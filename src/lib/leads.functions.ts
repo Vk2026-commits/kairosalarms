@@ -1,7 +1,9 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { sendLeadNotification } from "./lead-notification";
 
 const leadSchema = z.object({
+  submissionId: z.string().uuid(),
   firstName: z.string().min(1),
   phone: z.string().min(7),
   email: z.string().email(),
@@ -14,8 +16,9 @@ const leadSchema = z.object({
 });
 
 /**
- * Inserts a quote-funnel lead into the user's own Supabase `leads` table.
- * Uses the service key server-side only; the key never reaches the browser.
+ * Inserts a quote-funnel lead into the user's own Supabase `leads` table,
+ * then sends the callback alert through Resend. Both provider keys remain
+ * server-side and never reach the browser.
  */
 export const saveLead = createServerFn({ method: "POST" })
   .inputValidator((data) => leadSchema.parse(data))
@@ -48,5 +51,7 @@ export const saveLead = createServerFn({ method: "POST" })
       const body = await res.text();
       throw new Error(`Lead insert failed (${res.status}): ${body}`);
     }
+
+    await sendLeadNotification(data);
     return { ok: true };
   });

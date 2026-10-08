@@ -16,6 +16,7 @@ export type FunnelEvent =
   | "Question2Completed"
   | "Question3Completed"
   | "LeadSubmitted"
+  | "LeadSubmissionFailed"
   | "CallCTAClicked";
 
 export interface Attribution {

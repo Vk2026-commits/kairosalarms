@@ -63,13 +63,17 @@ export function QuoteFunnel() {
   const [answers, setAnswers] = useState<QuoteAnswers>({});
   const [form, setForm] = useState({ firstName: "", phone: "", email: "", zip: "", callConsent: false });
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const hasStarted = useRef(false);
   const advancing = useRef(false);
+  const submissionIdRef = useRef<string | null>(null);
 
   function answer(key: keyof QuoteAnswers, value: string, questionIndex: number) {
     if (advancing.current) return;
     advancing.current = true;
+    submissionIdRef.current = null;
+    setSubmitError(null);
     if (!hasStarted.current) {
       trackEvent("CTAClick", { location: "diagnostic_answer" });
       trackEvent("QuoteStarted", { location: "opening_diagnostic" });
@@ -89,10 +93,18 @@ export function QuoteFunnel() {
     e.preventDefault();
     if (submitting) return;
     setSubmitting(true);
+    setSubmitError(null);
     try {
-      await submitLead({ ...answers, ...form });
+      const submissionId = submissionIdRef.current ?? crypto.randomUUID();
+      submissionIdRef.current = submissionId;
+      await submitLead({ ...answers, ...form, submissionId });
       trackEvent("LeadSubmitted", { ...answers });
       setStep(4);
+    } catch {
+      trackEvent("LeadSubmissionFailed");
+      setSubmitError(
+        "We couldn't send your request right now. Please try again or call us directly.",
+      );
     } finally {
       setSubmitting(false);
     }
@@ -159,7 +171,11 @@ export function QuoteFunnel() {
                   autoComplete="given-name"
                   placeholder="First name"
                   value={form.firstName}
-                  onChange={(e) => setForm({ ...form, firstName: e.target.value })}
+                  onChange={(e) => {
+                    submissionIdRef.current = null;
+                    setSubmitError(null);
+                    setForm({ ...form, firstName: e.target.value });
+                  }}
                   className="h-14 rounded-xl border border-input bg-card px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
                 />
                 <input
@@ -168,7 +184,11 @@ export function QuoteFunnel() {
                   autoComplete="tel"
                   placeholder="Mobile phone"
                   value={form.phone}
-                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                  onChange={(e) => {
+                    submissionIdRef.current = null;
+                    setSubmitError(null);
+                    setForm({ ...form, phone: e.target.value });
+                  }}
                   className="h-14 rounded-xl border border-input bg-card px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
                 />
                 <input
@@ -177,7 +197,11 @@ export function QuoteFunnel() {
                   autoComplete="email"
                   placeholder="Email"
                   value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  onChange={(e) => {
+                    submissionIdRef.current = null;
+                    setSubmitError(null);
+                    setForm({ ...form, email: e.target.value });
+                  }}
                   className="h-14 rounded-xl border border-input bg-card px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
                 />
                 <input
@@ -188,7 +212,11 @@ export function QuoteFunnel() {
                   pattern="[0-9]{5}"
                   placeholder="ZIP code"
                   value={form.zip}
-                  onChange={(e) => setForm({ ...form, zip: e.target.value })}
+                  onChange={(e) => {
+                    submissionIdRef.current = null;
+                    setSubmitError(null);
+                    setForm({ ...form, zip: e.target.value });
+                  }}
                   className="h-14 rounded-xl border border-input bg-card px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
                 />
                 <p className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
@@ -200,7 +228,11 @@ export function QuoteFunnel() {
                     required
                     type="checkbox"
                     checked={form.callConsent}
-                    onChange={(e) => setForm({ ...form, callConsent: e.target.checked })}
+                    onChange={(e) => {
+                      submissionIdRef.current = null;
+                      setSubmitError(null);
+                      setForm({ ...form, callConsent: e.target.checked });
+                    }}
                     className="mt-0.5 h-5 w-5 shrink-0 cursor-pointer accent-primary"
                   />
                   <span className="text-xs font-medium leading-relaxed text-foreground">
@@ -216,6 +248,14 @@ export function QuoteFunnel() {
                   {submitting ? <Loader2 className="h-5 w-5 animate-spin" /> : <Lock className="h-4 w-4" />}
                   Show My Options
                 </Button>
+                {submitError && (
+                  <p
+                    role="alert"
+                    className="rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm font-medium text-destructive"
+                  >
+                    {submitError}
+                  </p>
+                )}
                 <p className="text-xs leading-relaxed text-muted-foreground">
                   By submitting, you agree that Kairos Security may contact you by phone, text, and
                   email about your security options, including using automated technology. Consent
