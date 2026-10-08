@@ -10,6 +10,7 @@ import {
 const lead: LeadNotificationInput = {
   submissionId: "74f4ebfc-2e30-4f96-bf73-f844b1228e5d",
   firstName: "Taylor",
+  lastName: "Johnson",
   phone: "+1 (281) 555-0199",
   email: "taylor@example.com",
   zip: "77002",
@@ -30,7 +31,7 @@ describe("Kairos lead emails", () => {
     const content = renderLeadNotification({ ...lead, firstName: "Taylor <Lead>" });
 
     expect(content.html).toContain("Kairos Security<br />Protection Plan");
-    expect(content.html).toContain("Taylor &lt;Lead&gt;");
+    expect(content.html).toContain("Taylor &lt;Lead&gt; Johnson");
     expect(content.html).toContain("Alarm + security cameras");
     expect(content.html).toContain("tel:+12815550199");
     expect(content.html).toContain("mailto:taylor%40example.com");
@@ -101,7 +102,7 @@ describe("Kairos lead emails", () => {
       from: "Kairos Security Protection Plan <leads@example.com>",
       to: ["staylor@kariossecurity.com"],
       reply_to: "taylor@example.com",
-      subject: "New Kairos Security lead — Taylor",
+      subject: "New Kairos Security lead — Taylor Johnson",
     });
     expect(internalBody.tags).toContainEqual({ name: "category", value: "security-lead" });
 

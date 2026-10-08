@@ -1,6 +1,7 @@
 export type LeadNotificationInput = {
   submissionId: string;
   firstName: string;
+  lastName: string;
   phone: string;
   email: string;
   zip: string;
@@ -53,6 +54,10 @@ function phoneHref(value: string): string {
   return value.replace(/[^+\d]/g, "");
 }
 
+function fullName(lead: LeadNotificationInput): string {
+  return `${lead.firstName} ${lead.lastName}`.trim();
+}
+
 function labelPropertyType(value?: string): string {
   if (value === "home") return "Home";
   if (value === "business") return "Business";
@@ -90,7 +95,8 @@ export function renderLeadNotification(lead: LeadNotificationInput): {
   const propertyType = labelPropertyType(lead.propertyType);
   const exteriorDoors = labelExteriorDoors(lead.exteriorDoors);
   const securityType = labelSecurityType(lead.securityType);
-  const safeFirstName = escapeHtml(lead.firstName);
+  const leadName = fullName(lead);
+  const safeLeadName = escapeHtml(leadName);
   const safeEmail = escapeHtml(lead.email);
   const callHref = `tel:${phoneHref(lead.phone)}`;
   const emailHref = `mailto:${encodeURIComponent(lead.email)}`;
@@ -119,7 +125,7 @@ export function renderLeadNotification(lead: LeadNotificationInput): {
             <tr>
               <td style="padding: 30px 32px 8px;">
                 <p style="margin: 0; color: #6f5d61; font-size: 14px; line-height: 1.5;">A new prospect completed the security options form. Follow up promptly while their request is fresh.</p>
-                <h2 style="margin: 23px 0 4px; color: #241517; font-family: 'Plus Jakarta Sans', Inter, Arial, sans-serif; font-size: 24px; line-height: 1.25;">${safeFirstName}</h2>
+                <h2 style="margin: 23px 0 4px; color: #241517; font-family: 'Plus Jakarta Sans', Inter, Arial, sans-serif; font-size: 24px; line-height: 1.25;">${safeLeadName}</h2>
                 <p style="margin: 0; color: #7a2428; font-size: 14px; font-weight: 700;">Houston-area security consultation request</p>
               </td>
             </tr>
@@ -141,7 +147,7 @@ export function renderLeadNotification(lead: LeadNotificationInput): {
                 <table role="presentation" cellspacing="0" cellpadding="0" border="0">
                   <tr>
                     <td style="border-radius: 9px; background: #470101;">
-                      <a href="${callHref}" style="display: inline-block; padding: 13px 20px; color: #ffffff; font-size: 14px; font-weight: 800; text-decoration: none;">Call ${safeFirstName}</a>
+                      <a href="${callHref}" style="display: inline-block; padding: 13px 20px; color: #ffffff; font-size: 14px; font-weight: 800; text-decoration: none;">Call ${safeLeadName}</a>
                     </td>
                     <td style="width: 12px;">&nbsp;</td>
                     <td style="border: 1px solid #470101; border-radius: 9px;">
@@ -166,7 +172,7 @@ export function renderLeadNotification(lead: LeadNotificationInput): {
   const text = [
     "KAIROS SECURITY PROTECTION PLAN — NEW SECURITY LEAD",
     "",
-    `${lead.firstName} completed the security options form.`,
+    `${leadName} completed the security options form.`,
     "",
     `Phone: ${lead.phone}`,
     `Email: ${lead.email}`,
@@ -295,7 +301,7 @@ export async function sendLeadEmails(
       from,
       to: [LEAD_RECIPIENT],
       reply_to: lead.email,
-      subject: `New Kairos Security lead — ${lead.firstName}`,
+      subject: `New Kairos Security lead — ${fullName(lead)}`,
       html: internalContent.html,
       text: internalContent.text,
       tags: [

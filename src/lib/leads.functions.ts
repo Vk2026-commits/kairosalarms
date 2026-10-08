@@ -4,7 +4,8 @@ import { sendLeadEmails } from "./lead-notification";
 
 const leadSchema = z.object({
   submissionId: z.string().uuid(),
-  firstName: z.string().min(1),
+  firstName: z.string().trim().min(1),
+  lastName: z.string().trim().min(1),
   phone: z.string().min(7),
   email: z.string().email(),
   zip: z.string().min(3),
@@ -25,6 +26,9 @@ export const saveLead = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const url = process.env["KAIROS_SUPABASE_URL"]!;
     const key = process.env["KAIROS_SUPABASE_SERVICE_KEY"]!;
+    // The current lead table has one name column; retaining the full name here
+    // keeps the new form field compatible without requiring a database migration.
+    const fullName = `${data.firstName} ${data.lastName}`;
 
     const res = await fetch(`${url}/rest/v1/leads`, {
       method: "POST",
@@ -35,7 +39,7 @@ export const saveLead = createServerFn({ method: "POST" })
         Prefer: "return=minimal",
       },
       body: JSON.stringify({
-        first_name: data.firstName,
+        first_name: fullName,
         phone: data.phone,
         email: data.email,
         zip: data.zip,

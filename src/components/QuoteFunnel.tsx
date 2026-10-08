@@ -61,7 +61,14 @@ const QUESTION_EVENTS = ["Question1Completed", "Question2Completed", "Question3C
 export function QuoteFunnel() {
   const [step, setStep] = useState<Step>(0);
   const [answers, setAnswers] = useState<QuoteAnswers>({});
-  const [form, setForm] = useState({ firstName: "", phone: "", email: "", zip: "", callConsent: false });
+  const [form, setForm] = useState({
+    firstName: "",
+    lastName: "",
+    phone: "",
+    email: "",
+    zip: "",
+    callConsent: false,
+  });
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -165,19 +172,34 @@ export function QuoteFunnel() {
                 the best setup and pricing for your property.
               </p>
               <form onSubmit={handleSubmit} className="mt-6 grid gap-3">
-                <input
-                  required
-                  type="text"
-                  autoComplete="given-name"
-                  placeholder="First name"
-                  value={form.firstName}
-                  onChange={(e) => {
-                    submissionIdRef.current = null;
-                    setSubmitError(null);
-                    setForm({ ...form, firstName: e.target.value });
-                  }}
-                  className="h-14 rounded-xl border border-input bg-card px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
-                />
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <input
+                    required
+                    type="text"
+                    autoComplete="given-name"
+                    placeholder="First name"
+                    value={form.firstName}
+                    onChange={(e) => {
+                      submissionIdRef.current = null;
+                      setSubmitError(null);
+                      setForm({ ...form, firstName: e.target.value });
+                    }}
+                    className="h-14 rounded-xl border border-input bg-card px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
+                  />
+                  <input
+                    required
+                    type="text"
+                    autoComplete="family-name"
+                    placeholder="Last name"
+                    value={form.lastName}
+                    onChange={(e) => {
+                      submissionIdRef.current = null;
+                      setSubmitError(null);
+                      setForm({ ...form, lastName: e.target.value });
+                    }}
+                    className="h-14 rounded-xl border border-input bg-card px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
+                  />
+                </div>
                 <input
                   required
                   type="tel"
