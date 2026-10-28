@@ -10,3 +10,4 @@
 <!-- LOVABLE:END -->
 
 - Render the quote diagnostic directly in the opening section and track QuoteStarted on the first answer, so visitors enter the existing frontend-only flow without a start-button gate.
+- Meta Pixel lives only in src/lib/meta-pixel.ts: PageView from the root route per URL, Lead only after a confirmed lead save, deduped by submission id; never send personal data to Meta.
