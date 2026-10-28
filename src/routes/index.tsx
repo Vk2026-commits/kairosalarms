@@ -8,7 +8,6 @@ import {
   Phone,
   Radio,
   Settings2,
-  Star,
   Wrench,
   X,
 } from "lucide-react";
@@ -229,26 +228,6 @@ function Index() {
                 ))}
               </ul>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Social proof — placeholders until real reviews are provided */}
-      <section className="px-5 py-16 sm:py-24">
-        <div className="mx-auto max-w-5xl">
-          <h2 className={`${H} text-center text-3xl sm:text-5xl`}>What Local Customers Say</h2>
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
-            {["Local Homeowner", "Business Owner", "Property Manager"].map((role) => (
-              <div key={role} className="rounded-xl border border-border bg-card p-6 shadow-soft">
-                <span className="flex gap-0.5 text-primary">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="h-4 w-4 fill-current" />
-                  ))}
-                </span>
-                <p className="mt-4 italic text-muted-foreground">[Placeholder — real customer review goes here]</p>
-                <p className="mt-4 text-sm font-semibold">{role}</p>
-              </div>
-            ))}
           </div>
         </div>
       </section>
