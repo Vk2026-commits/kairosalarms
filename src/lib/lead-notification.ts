@@ -27,7 +27,7 @@ type ResendEmailPayload = {
 
 const LEAD_RECIPIENT = "staylor@kariossecurity.com";
 const BRAND_NAME = "Kairos Security Protection Plan";
-const KAIROS_SECURITY_PHONE = "+12815550134";
+const KAIROS_SECURITY_PHONE = "+18885247678";
 
 function getRequiredEnvironmentVariable(name: string): string {
   const value = process.env[name]?.trim();

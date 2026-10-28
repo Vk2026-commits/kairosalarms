@@ -84,15 +84,6 @@ export function trackEvent(event: FunnelEvent, data: Record<string, unknown> = {
   window.dataLayer = window.dataLayer ?? [];
   window.dataLayer.push(payload);
 
-  // Meta Pixel mapping (no-op until the pixel is installed).
-  const metaEvents: Partial<Record<FunnelEvent, string>> = {
-    PageView: "PageView",
-    QuoteStarted: "InitiateCheckout",
-    LeadSubmitted: "Lead",
-    CallCTAClicked: "Contact",
-  };
-  const metaEvent = metaEvents[event];
-  if (metaEvent && typeof window.fbq === "function") {
-    window.fbq("track", metaEvent, data);
-  }
+  // Meta Pixel events are sent only from src/lib/meta-pixel.ts
+  // (PageView from the root route, Lead after a confirmed save).
 }
