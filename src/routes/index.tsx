@@ -40,7 +40,7 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const PHONE = "+12815550134";
+const PHONE = "+18885247678";
 
 function Index() {
   useEffect(() => {
@@ -68,7 +68,7 @@ function Index() {
         <div className="relative z-10 border-b border-primary-foreground/10 text-[11px] text-primary-foreground/70">
           <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-2">
             <span className="flex items-center gap-1.5"><MapPin className="h-3 w-3" /> Locally owned · Serving Houston & surrounding areas</span>
-            <span className="hidden items-center gap-1.5 sm:flex"><Phone className="h-3 w-3" /> (281) 555-0134</span>
+            <span className="hidden items-center gap-1.5 sm:flex"><Phone className="h-3 w-3" /> 1-888-524-7678</span>
           </div>
         </div>
 
@@ -87,7 +87,7 @@ function Index() {
             className="flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground ring-1 ring-primary-foreground/20 transition-colors hover:bg-burgundy-mid"
           >
             <Phone className="h-4 w-4" />
-            <span className="hidden sm:inline">(281) 555-0134</span>
+            <span className="hidden sm:inline">1-888-524-7678</span>
             <span className="sm:hidden">Call</span>
           </a>
         </header>

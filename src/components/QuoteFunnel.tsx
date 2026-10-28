@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { submitLead, type QuoteAnswers } from "@/lib/leads";
 import { trackEvent } from "@/lib/tracking";
+import { trackMetaLead } from "@/lib/meta-pixel";
 import { Button } from "@/components/ui/button";
 
 type Step = 0 | 1 | 2 | 3 | 4; // 0-2 questions, 3 lead form, 4 results
@@ -106,6 +107,7 @@ export function QuoteFunnel() {
       submissionIdRef.current = submissionId;
       await submitLead({ ...answers, ...form, submissionId });
       trackEvent("LeadSubmitted", { ...answers });
+      trackMetaLead(submissionId);
       setStep(4);
     } catch {
       trackEvent("LeadSubmissionFailed");
