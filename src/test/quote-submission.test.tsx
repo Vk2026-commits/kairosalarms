@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor, cleanup } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor, cleanup } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
 import { QuoteFunnel } from "@/components/QuoteFunnel";
 
@@ -16,11 +16,11 @@ async function completeForm() {
   fireEvent.click(await screen.findByRole("button", { name: "Alarm system" }));
   const firstName = await screen.findByPlaceholderText("First name");
   fireEvent.change(firstName, { target: { value: "Test" } });
-  for (const [placeholder, value] of [["Last name", "Acceptance"], ["Mobile phone", "2025550101"], ["Email", "test@example.com"], ["ZIP code", "77002"]]) {
+  for (const [placeholder, value] of [["Last name", "Acceptance"], ["Mobile phone", "2025550101"], ["Email", "test@example.com"], ["ZIP code", "77002"]] as const) {
     fireEvent.change(screen.getByPlaceholderText(placeholder), { target: { value } });
   }
   fireEvent.click(screen.getByRole("checkbox"));
-  fireEvent.click(screen.getByRole("button", { name: "Show My Options" }));
+  await act(async () => { fireEvent.click(screen.getByRole("button", { name: "Show My Options" })); });
 }
 
 it("fires Lead only after the submission is accepted, never while pending", async () => {
@@ -29,7 +29,7 @@ it("fires Lead only after the submission is accepted, never while pending", asyn
   await completeForm();
   expect(mocks.submitLead).toHaveBeenCalledOnce();
   expect(mocks.trackMetaLead).not.toHaveBeenCalled();
-  accept?.();
+  await act(async () => { accept?.(); });
   await waitFor(() => expect(mocks.trackMetaLead).toHaveBeenCalledOnce());
   expect(mocks.trackMetaLead).toHaveBeenCalledWith(mocks.submitLead.mock.calls[0]?.[0].submissionId);
 });
