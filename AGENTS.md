@@ -11,3 +11,5 @@
 
 - Render the quote diagnostic directly in the opening section and track QuoteStarted on the first answer, so visitors enter the existing frontend-only flow without a start-button gate.
 - Meta Pixel lives only in src/lib/meta-pixel.ts: PageView from the root route per URL, Lead only after a confirmed lead save, deduped by submission id; never send personal data to Meta.
+- Meta Pixel's shared consent guard requires a production build and the exact production hostname, so all event entry points reject previews and development.
+- Results-screen call actions use the shared business-phone constant to prevent placeholder numbers diverging between actions.
