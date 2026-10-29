@@ -14,6 +14,7 @@ import {
   ShieldCheck,
   Smartphone,
   Video,
+  Phone,
 } from "lucide-react";
 import { submitLead, type QuoteAnswers } from "@/lib/leads";
 import { trackEvent } from "@/lib/tracking";
