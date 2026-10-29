@@ -369,49 +369,39 @@ function Results({ answers, firstName }: { answers: QuoteAnswers; firstName: str
 
   return (
     <div>
-      <h3 className="font-['Plus_Jakarta_Sans'] font-extrabold font-bold text-2xl tracking-tight text-foreground sm:text-3xl">
-        {firstName ? `${firstName}, we` : "We"} Found Your Best Starting Point
+      <h3 className="text-balance font-['Plus_Jakarta_Sans'] text-2xl font-bold leading-snug tracking-tight text-foreground sm:text-[1.75rem]">
+        {firstName ? `${firstName.trim()}, we` : "We"} found your best starting point
       </h3>
-      <p className="mt-3 text-sm text-muted-foreground sm:text-base">
+      <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
         Based on your answers, a Kairos {property} security package may include:
       </p>
-      <ul className="mt-5 grid gap-3">
+      <ul className="mt-5 divide-y divide-border border-y border-border">
         {inclusions.map((item) => (
-          <li key={item.label} className="flex items-center gap-3 rounded-xl border border-border bg-secondary px-4 py-3">
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-              <item.icon className="h-4 w-4" />
-            </span>
+          <li key={item.label} className="flex items-center gap-3 py-3">
+            <item.icon className="h-5 w-5 shrink-0 text-primary" />
             <span className="text-sm font-medium text-foreground sm:text-base">{item.label}</span>
           </li>
         ))}
       </ul>
-      <div className="mt-6 rounded-xl border border-primary/20 bg-primary/5 p-5 text-center">
-        <p className="font-['Plus_Jakarta_Sans'] font-extrabold font-bold text-lg tracking-tight text-primary sm:text-xl">
+      <div className="mt-6 text-center">
+        <p className="font-['Plus_Jakarta_Sans'] text-2xl font-bold tracking-tight text-primary">
           Plans start at $39.99/mo
         </p>
         <p className="mt-1 text-sm text-muted-foreground">
           Final pricing depends on the equipment and protection your property needs.
         </p>
-        <p className="mt-3 flex items-center justify-center gap-1.5 text-xs font-bold uppercase tracking-wide text-primary">
+        <p className="mt-2 flex items-center justify-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
           <MapPin className="h-3.5 w-3.5" /> Houston & surrounding areas
         </p>
       </div>
-      <div className="mt-5 grid gap-3 sm:grid-cols-2">
-        <a
-          href={`tel:${BUSINESS_PHONE}`}
-          onClick={() => trackEvent("CallCTAClicked", { location: "results" })}
-          className="flex h-14 items-center justify-center rounded-xl bg-primary font-['Plus_Jakarta_Sans'] font-extrabold text-base uppercase tracking-wide text-primary-foreground transition-all hover:bg-navy-deep active:scale-[0.99]"
-        >
-          Talk With a Security Specialist
-        </a>
-        <a
-          href={`tel:${BUSINESS_PHONE}`}
-          onClick={() => trackEvent("CallCTAClicked", { location: "results_secondary" })}
-          className="flex h-14 items-center justify-center rounded-xl border-2 border-primary font-['Plus_Jakarta_Sans'] font-extrabold text-base uppercase tracking-wide text-primary transition-all hover:bg-primary/5 active:scale-[0.99]"
-        >
-          Call Me About My Options
-        </a>
-      </div>
+      <a
+        href={`tel:${BUSINESS_PHONE}`}
+        onClick={() => trackEvent("CallCTAClicked", { location: "results" })}
+        className="mt-6 flex h-14 w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 font-['Plus_Jakarta_Sans'] text-base font-bold text-primary-foreground shadow-lift transition-all hover:bg-navy-deep active:scale-[0.99]"
+      >
+        <Phone className="h-5 w-5" /> Talk to a Security Specialist
+      </a>
+      <p className="mt-2 text-center text-xs text-muted-foreground">1-888-524-7678</p>
     </div>
   );
 }
