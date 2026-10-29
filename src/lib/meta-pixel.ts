@@ -17,6 +17,9 @@ type Fbq = ((...args: unknown[]) => void) & {
 };
 
 let initialized = false;
+/** "queued" = stub only; "loaded" = fbevents.js downloaded; "failed" = download error. Neither proves Meta received an event. */
+export let metaScriptStatus: "idle" | "queued" | "loaded" | "failed" = "idle";
+let pendingLeads: string[] = [];
 let lastPageViewUrl: string | null = null;
 
 export function hasTrackingConsent(): boolean {
@@ -49,6 +52,23 @@ export function initMetaPixel(): boolean {
     const s = document.createElement("script");
     s.async = true;
     s.src = "https://connect.facebook.net/en_US/fbevents.js";
+    metaScriptStatus = "queued";
+    s.onload = () => {
+      metaScriptStatus = "loaded";
+      const ids = pendingLeads;
+      pendingLeads = [];
+      ids.forEach(markLeadFired);
+    };
+    s.onerror = () => {
+      metaScriptStatus = "failed";
+      pendingLeads = [];
+      initialized = false;
+      lastPageViewUrl = null;
+      delete w.fbq;
+      delete w._fbq;
+      s.remove();
+      console.warn("[meta-pixel] fbevents.js failed to load; lead not marked as sent");
+    };
     document.head.appendChild(s);
   }
   w.fbq?.("init", META_PIXEL_ID);
@@ -64,20 +84,30 @@ export function trackMetaPageView(url: string) {
   window.fbq?.("track", "PageView");
 }
 
-/** Fires Lead once per confirmed submission id; never repeats on refresh. */
-export function trackMetaLead(submissionId: string) {
-  if (!initMetaPixel()) return;
-  let fired: string[] = [];
+function readFired(): string[] {
   try {
-    fired = JSON.parse(window.localStorage.getItem(LEAD_FIRED_KEY) ?? "[]");
+    return JSON.parse(window.localStorage.getItem(LEAD_FIRED_KEY) ?? "[]");
   } catch {
-    /* ignore */
+    return [];
   }
+}
+
+function markLeadFired(submissionId: string) {
+  const fired = readFired();
   if (fired.includes(submissionId)) return;
-  window.fbq?.("track", "Lead", {}, { eventID: submissionId });
   try {
     window.localStorage.setItem(LEAD_FIRED_KEY, JSON.stringify([...fired, submissionId].slice(-20)));
   } catch {
     /* ignore */
   }
+}
+
+/** Fires Lead once per confirmed submission id; never repeats on refresh.
+ * The id is only remembered once fbevents.js has loaded, so a failed download allows a later retry. */
+export function trackMetaLead(submissionId: string) {
+  if (!initMetaPixel()) return;
+  if (readFired().includes(submissionId) || pendingLeads.includes(submissionId)) return;
+  window.fbq?.("track", "Lead", {}, { eventID: submissionId });
+  if (metaScriptStatus === "queued") pendingLeads.push(submissionId);
+  else markLeadFired(submissionId);
 }
