@@ -5,6 +5,7 @@
  * "kairos_tracking_optout" = "1") never load the pixel.
  */
 export const META_PIXEL_ID = "4539741692932903";
+const PRODUCTION_HOSTNAME = "alarms.kairossecurity.com";
 const LEAD_FIRED_KEY = "kairos_meta_leads";
 
 type Fbq = ((...args: unknown[]) => void) & {
@@ -20,6 +21,7 @@ let lastPageViewUrl: string | null = null;
 
 export function hasTrackingConsent(): boolean {
   if (typeof window === "undefined") return false;
+  if (!import.meta.env.PROD || window.location.hostname !== PRODUCTION_HOSTNAME) return false;
   try {
     if ((navigator as Navigator & { globalPrivacyControl?: boolean }).globalPrivacyControl) return false;
     if (window.localStorage.getItem("kairos_tracking_optout") === "1") return false;
@@ -36,7 +38,7 @@ export function initMetaPixel(): boolean {
   if (!w.fbq) {
     const n: Fbq = function (...args: unknown[]) {
       if (n.callMethod) n.callMethod(...args);
-      else n.queue!.push(args);
+      else n.queue?.push(args);
     } as Fbq;
     n.push = n;
     n.loaded = true;
@@ -49,7 +51,7 @@ export function initMetaPixel(): boolean {
     s.src = "https://connect.facebook.net/en_US/fbevents.js";
     document.head.appendChild(s);
   }
-  w.fbq!("init", META_PIXEL_ID);
+  w.fbq?.("init", META_PIXEL_ID);
   initialized = true;
   return true;
 }

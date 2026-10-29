@@ -18,6 +18,7 @@ import {
 import { submitLead, type QuoteAnswers } from "@/lib/leads";
 import { trackEvent } from "@/lib/tracking";
 import { trackMetaLead } from "@/lib/meta-pixel";
+import { BUSINESS_PHONE } from "@/lib/business-phone";
 import { Button } from "@/components/ui/button";
 
 type Step = 0 | 1 | 2 | 3 | 4; // 0-2 questions, 3 lead form, 4 results
@@ -397,14 +398,14 @@ function Results({ answers, firstName }: { answers: QuoteAnswers; firstName: str
       </div>
       <div className="mt-5 grid gap-3 sm:grid-cols-2">
         <a
-          href="tel:+12815550134"
+          href={`tel:${BUSINESS_PHONE}`}
           onClick={() => trackEvent("CallCTAClicked", { location: "results" })}
           className="flex h-14 items-center justify-center rounded-xl bg-primary font-['Plus_Jakarta_Sans'] font-extrabold text-base uppercase tracking-wide text-primary-foreground transition-all hover:bg-navy-deep active:scale-[0.99]"
         >
           Talk With a Security Specialist
         </a>
         <a
-          href="tel:+12815550134"
+          href={`tel:${BUSINESS_PHONE}`}
           onClick={() => trackEvent("CallCTAClicked", { location: "results_secondary" })}
           className="flex h-14 items-center justify-center rounded-xl border-2 border-primary font-['Plus_Jakarta_Sans'] font-extrabold text-base uppercase tracking-wide text-primary transition-all hover:bg-primary/5 active:scale-[0.99]"
         >
