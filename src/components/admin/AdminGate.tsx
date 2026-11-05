@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { ArrowRight, LockKeyhole } from "lucide-react";
+import { ArrowRight, Eye, EyeOff, LockKeyhole } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,6 +21,7 @@ export function AdminGate({
   onRetry: () => void;
 }) {
   const [passcode, setPasscode] = useState("");
+  const [reveal, setReveal] = useState(false);
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const submitted = passcode;
@@ -94,17 +95,32 @@ export function AdminGate({
               )}
               <div className="space-y-2">
                 <Label htmlFor="admin-passcode">Admin passcode</Label>
-                <Input
-                  id="admin-passcode"
-                  name="passcode"
-                  type="password"
-                  autoComplete="off"
-                  value={passcode}
-                  onChange={(event) => setPasscode(event.target.value)}
-                  disabled={busy}
-                  required
-                  className="h-11 bg-white"
-                />
+                <div className="relative">
+                  <Input
+                    id="admin-passcode"
+                    name="passcode"
+                    type={reveal ? "text" : "password"}
+                    autoComplete="off"
+                    value={passcode}
+                    onChange={(event) => setPasscode(event.target.value)}
+                    disabled={busy}
+                    required
+                    className="h-11 bg-white pr-11"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setReveal((v) => !v)}
+                    aria-label={reveal ? "Hide passcode" : "Show passcode"}
+                    aria-pressed={reveal}
+                    className="absolute inset-y-0 right-0 flex w-11 items-center justify-center text-muted-foreground hover:text-foreground"
+                  >
+                    {reveal ? (
+                      <EyeOff className="size-4" aria-hidden="true" />
+                    ) : (
+                      <Eye className="size-4" aria-hidden="true" />
+                    )}
+                  </button>
+                </div>
               </div>
               <Button type="submit" disabled={busy || !passcode} className="h-11 w-full">
                 {busy ? (
