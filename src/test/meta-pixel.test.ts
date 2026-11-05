@@ -21,7 +21,13 @@ describe("Production-only Meta tracking", () => {
     vi.unstubAllEnvs();
   });
 
-  it.each(["localhost", "kairosalarms.lovable.app", "id-preview--example.lovable.app", "unrelated.com", "alarms.kairossecurity.com.evil.com"])("never initializes or tracks on %s", async (hostname) => {
+  it.each([
+    "localhost",
+    "kairosalarms.lovable.app",
+    "id-preview--example.lovable.app",
+    "unrelated.com",
+    "alarms.kairossecurity.com.evil.com",
+  ])("never initializes or tracks on %s", async (hostname) => {
     window.location.hostname = hostname;
     const pixel = await import("@/lib/meta-pixel");
     expect(pixel.initMetaPixel()).toBe(false);
@@ -43,8 +49,20 @@ describe("Production-only Meta tracking", () => {
     pixel.trackMetaPageView("/");
     pixel.trackMetaPageView("/");
     pixel.trackMetaPageView("/contact");
-    expect(fbq.mock.calls.filter(([command]) => command === "init")).toEqual([["init", "4539741692932903"]]);
+    expect(fbq.mock.calls.filter(([command]) => command === "init")).toEqual([
+      ["init", "4539741692932903"],
+    ]);
     expect(fbq.mock.calls.filter(([, event]) => event === "PageView")).toHaveLength(2);
+  });
+
+  it("never initializes or tracks admin URLs, and disables automatic capture", async () => {
+    const pixel = await import("@/lib/meta-pixel");
+    pixel.trackMetaPageView("/admin");
+    pixel.trackMetaPageView("/admin?search=private-customer");
+    pixel.trackMetaPageView("/admin/details");
+    expect(fbq).not.toHaveBeenCalled();
+    pixel.trackMetaPageView("/");
+    expect(fbq).toHaveBeenCalledWith("set", "autoConfig", false, "4539741692932903");
   });
 
   it("counts an accepted submission once, including after refresh", async () => {

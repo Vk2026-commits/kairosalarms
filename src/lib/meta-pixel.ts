@@ -26,7 +26,8 @@ export function hasTrackingConsent(): boolean {
   if (typeof window === "undefined") return false;
   if (!import.meta.env.PROD || window.location.hostname !== PRODUCTION_HOSTNAME) return false;
   try {
-    if ((navigator as Navigator & { globalPrivacyControl?: boolean }).globalPrivacyControl) return false;
+    if ((navigator as Navigator & { globalPrivacyControl?: boolean }).globalPrivacyControl)
+      return false;
     if (window.localStorage.getItem("kairos_tracking_optout") === "1") return false;
   } catch {
     /* ignore */
@@ -71,6 +72,8 @@ export function initMetaPixel(): boolean {
     };
     document.head.appendChild(s);
   }
+  // Never automatically capture private CRM interactions or form contents.
+  w.fbq?.("set", "autoConfig", false, META_PIXEL_ID);
   w.fbq?.("init", META_PIXEL_ID);
   initialized = true;
   return true;
@@ -78,6 +81,8 @@ export function initMetaPixel(): boolean {
 
 /** Fires PageView once per distinct URL (page load or real navigation). */
 export function trackMetaPageView(url: string) {
+  const pathname = new URL(url, "https://alarms.kairossecurity.com").pathname;
+  if (pathname === "/admin" || pathname.startsWith("/admin/")) return;
   if (url === lastPageViewUrl) return;
   if (!initMetaPixel()) return;
   lastPageViewUrl = url;
@@ -96,7 +101,10 @@ function markLeadFired(submissionId: string) {
   const fired = readFired();
   if (fired.includes(submissionId)) return;
   try {
-    window.localStorage.setItem(LEAD_FIRED_KEY, JSON.stringify([...fired, submissionId].slice(-20)));
+    window.localStorage.setItem(
+      LEAD_FIRED_KEY,
+      JSON.stringify([...fired, submissionId].slice(-20)),
+    );
   } catch {
     /* ignore */
   }

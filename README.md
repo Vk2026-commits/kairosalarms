@@ -42,3 +42,11 @@ Set these **server-only** environment variables in the deployment that runs the 
 | `KAIROS_RESEND_FROM` | Branded sender, for example `Kairos Security Protection Plan <leads@your-verified-domain.com>`. |
 
 Before enabling live traffic, add and verify the sender domain in Resend. Resend requires a verified domain for production sending. The server uses separate `Idempotency-Key` values for each internal alert and customer confirmation, so a retry within 24 hours does not send duplicate emails.
+
+## Private lead dashboard — `/admin`
+
+The **Kairos Security Total Home Protection Plan** dashboard lets the team view and search saved leads, track New/Contacted/Follow-up/Won/Lost statuses, assign Stephen or Rose, save notes, schedule follow-ups, and export matching leads as CSV. It uses the existing Supabase `leads` table; CRM metadata is stored under `attribution.kairos_admin` without changing original attribution or requiring a migration.
+
+Before publishing, add **`KAIROS_ADMIN_PASSCODE`** through Lovable's protected server-secret input. Use a strong randomly generated passphrase of at least 24 characters (12–256 accepted), never a short PIN or `VITE_*` value. The admin screen stays locked until this secret is configured. Existing server-side Supabase secrets are reused. Shared-passcode sessions expire after eight hours.
+
+See [admin setup and security notes](docs/admin-setup.md) for the required existing table fields, concurrency behavior, CSV limits, host-level rate-limit recommendation, and publishing steps. Publishing remains a user action in Lovable.

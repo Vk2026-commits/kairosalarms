@@ -47,7 +47,12 @@ export const saveLead = createServerFn({ method: "POST" })
         property_type: data.propertyType ?? null,
         exterior_doors: data.exteriorDoors ?? null,
         security_type: data.securityType ?? null,
-        attribution: data.attribution ?? null,
+        // CRM fields are written only by the passcode-protected admin endpoints.
+        attribution: data.attribution
+          ? Object.fromEntries(
+              Object.entries(data.attribution).filter(([key]) => key !== "kairos_admin"),
+            )
+          : null,
       }),
     });
 
