@@ -46,21 +46,15 @@ export async function verifyPasscodeVerifier(
   candidate: string,
   verifier: { iterations: number; salt: string; digest: string },
 ): Promise<boolean> {
-  const key = await crypto.subtle.importKey("raw", encoder.encode(candidate), "PBKDF2", false, [
-    "deriveBits",
-  ]);
-  const derived = await crypto.subtle.deriveBits(
-    {
-      name: "PBKDF2",
-      hash: "SHA-256",
-      salt: hexBytes(verifier.salt),
-      iterations: verifier.iterations,
-    },
-    key,
-    256,
-  );
+  // Cloudflare Workers cap WebCrypto PBKDF2 at 100k iterations, so use a portable
+  // implementation for verifiers above that limit.
+  const { pbkdf2Async } = await import("@noble/hashes/pbkdf2.js");
+  const { sha256 } = await import("@noble/hashes/sha2.js");
+  const actual = await pbkdf2Async(sha256, encoder.encode(candidate), hexBytes(verifier.salt), {
+    c: verifier.iterations,
+    dkLen: 32,
+  });
   const expected = hexBytes(verifier.digest);
-  const actual = new Uint8Array(derived);
   let difference = actual.length ^ expected.length;
   for (let index = 0; index < actual.length; index++)
     difference |= actual[index]! ^ (expected[index] ?? 0);
