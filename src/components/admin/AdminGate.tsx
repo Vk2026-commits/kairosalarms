@@ -54,16 +54,16 @@ export function AdminGate({
             <div className="mt-5 space-y-4 text-sm leading-relaxed">
               <h2 className="font-semibold">One-time server setup required</h2>
               <p>
-                Add{" "}
+                Confirm{" "}
                 <code className="rounded bg-secondary px-1 py-0.5 text-xs">
-                  KAIROS_ADMIN_PASSCODE
+                  KAIROS_SUPABASE_SERVICE_KEY
                 </code>{" "}
-                in Lovable server secrets. Use a shared passcode with at least{" "}
-                <strong>12 characters</strong>.
+                is present in Lovable server secrets. The shared passcode verifier is already
+                configured on the server.
               </p>
               <p className="text-muted-foreground">
-                Never add the passcode to frontend code or share it in a public link. Once the
-                server secret is saved, check again.
+                If you set a KAIROS_ADMIN_PASSCODE override, it must contain at least 12 characters.
+                Never add a passcode to frontend code or a public link.
               </p>
               <Button type="button" variant="outline" onClick={onRetry}>
                 Check configuration again

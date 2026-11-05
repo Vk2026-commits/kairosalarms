@@ -11,6 +11,12 @@ import {
 export const ADMIN_SESSION_SECONDS = 8 * 60 * 60;
 export const ADMIN_SESSION_EXPIRED = "Your admin session has expired. Sign in again.";
 const encoder = new TextEncoder();
+// One-way verifier only. The user-selected plaintext passcode is not stored in source.
+const ADMIN_VERIFIER = {
+  iterations: 310_000,
+  salt: "b6ce00ed778e8db7337b615b8b939db8",
+  digest: "c03efae21574cbbf8162c22a9e309205914297b53a4a360c9dfdcdd565862dc3",
+};
 const attempts = new Map<string, { count: number; expiresAt: number }>();
 const WINDOW_MS = 15 * 60 * 1000;
 
@@ -25,6 +31,62 @@ export function privateAdminResponse(): void {
 export function getAdminPasscode(): string | null {
   const value = process.env["KAIROS_ADMIN_PASSCODE"]?.trim();
   return value && value.length >= 12 && value.length <= 256 ? value : null;
+}
+
+export function hasAdminConfiguration(): boolean {
+  if (!process.env["KAIROS_SUPABASE_SERVICE_KEY"]?.trim()) return false;
+  return !process.env["KAIROS_ADMIN_PASSCODE"]?.trim() || getAdminPasscode() !== null;
+}
+
+function hexBytes(value: string): Uint8Array<ArrayBuffer> {
+  return Uint8Array.from(value.match(/.{2}/g) ?? [], (pair) => Number.parseInt(pair, 16));
+}
+
+export async function verifyPasscodeVerifier(
+  candidate: string,
+  verifier: { iterations: number; salt: string; digest: string },
+): Promise<boolean> {
+  const key = await crypto.subtle.importKey("raw", encoder.encode(candidate), "PBKDF2", false, [
+    "deriveBits",
+  ]);
+  const derived = await crypto.subtle.deriveBits(
+    {
+      name: "PBKDF2",
+      hash: "SHA-256",
+      salt: hexBytes(verifier.salt),
+      iterations: verifier.iterations,
+    },
+    key,
+    256,
+  );
+  const expected = hexBytes(verifier.digest);
+  const actual = new Uint8Array(derived);
+  let difference = actual.length ^ expected.length;
+  for (let index = 0; index < actual.length; index++)
+    difference |= actual[index]! ^ (expected[index] ?? 0);
+  return difference === 0;
+}
+
+export async function verifyConfiguredAdminPasscode(candidate: string): Promise<boolean> {
+  if (!hasAdminConfiguration()) return false;
+  const override = getAdminPasscode();
+  return override
+    ? verifyAdminPasscode(candidate, override)
+    : verifyPasscodeVerifier(candidate, ADMIN_VERIFIER);
+}
+
+async function sessionSigningSecret(): Promise<string | null> {
+  if (!hasAdminConfiguration()) return null;
+  // Public verifier material must never be sufficient to mint sessions. Domain-separate
+  // signing material from the existing server-only Supabase key and current passcode version.
+  const version = getAdminPasscode() ?? ADMIN_VERIFIER.digest;
+  const bytes = await crypto.subtle.digest(
+    "SHA-256",
+    encoder.encode(
+      `kairos-admin-signing-v2:${process.env["KAIROS_SUPABASE_SERVICE_KEY"]}:${version}`,
+    ),
+  );
+  return Array.from(new Uint8Array(bytes), (value) => value.toString(16).padStart(2, "0")).join("");
 }
 
 function requestOrigin(): string {
@@ -143,10 +205,10 @@ export async function verifyAdminSessionToken(
 
 export async function readAdminSession(): Promise<number | null> {
   privateAdminResponse();
-  const passcode = getAdminPasscode();
-  if (!passcode) return null;
+  const secret = await sessionSigningSecret();
+  if (!secret) return null;
   const { name } = cookieOptions();
-  return verifyAdminSessionToken(getCookie(name), passcode, requestOrigin());
+  return verifyAdminSessionToken(getCookie(name), secret, requestOrigin());
 }
 
 export async function requireAdmin(): Promise<void> {
@@ -183,8 +245,13 @@ export async function verifyAdminPasscode(candidate: string, expected: string): 
   return crypto.subtle.verify("HMAC", key, signature, encoder.encode(candidate));
 }
 
-export async function startAdminSession(passcode: string): Promise<number> {
-  const { token, expiresAt } = await createAdminSessionToken(passcode, requestOrigin());
+export async function startAdminSession(): Promise<number> {
+  const secret = await sessionSigningSecret();
+  if (!secret)
+    throw new Error(
+      "Admin access is not configured. Check the existing server-only Supabase connection secret.",
+    );
+  const { token, expiresAt } = await createAdminSessionToken(secret, requestOrigin());
   const { name, options } = cookieOptions();
   setCookie(name, token, { ...options, maxAge: ADMIN_SESSION_SECONDS });
   return expiresAt;

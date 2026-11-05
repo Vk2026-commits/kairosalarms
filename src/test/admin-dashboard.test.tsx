@@ -109,8 +109,8 @@ describe("admin dashboard", () => {
     api.getAdminSession.mockResolvedValue({ ...signedOut, configured: false });
     render(<AdminDashboard />);
     expect(await screen.findByText("One-time server setup required")).toBeInTheDocument();
-    expect(screen.getByText("KAIROS_ADMIN_PASSCODE")).toBeInTheDocument();
-    expect(screen.getByText("12 characters")).toBeInTheDocument();
+    expect(screen.getByText("KAIROS_SUPABASE_SERVICE_KEY")).toBeInTheDocument();
+    expect(screen.getByText(/shared passcode verifier is already/)).toBeInTheDocument();
     expect(screen.queryByLabelText("Admin passcode")).not.toBeInTheDocument();
     expect(api.listAdminLeads).not.toHaveBeenCalled();
   });

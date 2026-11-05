@@ -98,6 +98,12 @@ describe("Private admin endpoints", () => {
     delete process.env["KAIROS_ADMIN_PASSCODE"];
     expect(await getAdminSession()).toEqual({
       authenticated: false,
+      configured: true,
+      expiresAt: null,
+    });
+    delete process.env["KAIROS_SUPABASE_SERVICE_KEY"];
+    expect(await getAdminSession()).toEqual({
+      authenticated: false,
       configured: false,
       expiresAt: null,
     });

@@ -27,10 +27,13 @@ import {
   consumeAdminLoginAttempt,
   createAdminSessionToken,
   getAdminPasscode,
+  hasAdminConfiguration,
   readAdminSession,
   requireAdmin,
   startAdminSession,
   verifyAdminPasscode,
+  verifyConfiguredAdminPasscode,
+  verifyPasscodeVerifier,
   verifyAdminSessionToken,
 } from "@/lib/admin-auth";
 import {
@@ -115,12 +118,53 @@ describe("Admin security", () => {
     ).toBeNull();
   });
   it("accepts a real session and clears it on logout", async () => {
-    await startAdminSession(passcode);
+    await startAdminSession();
     expect(await readAdminSession()).not.toBeNull();
     await expect(requireAdmin()).resolves.toBeUndefined();
     clearAdminSession();
     expect(await readAdminSession()).toBeNull();
     expect(headers).toHaveBeenCalledWith("Cache-Control", "private, no-store, max-age=0");
+  });
+  it("supports the configured verifier without a new passcode secret and fails closed without a signing secret", async () => {
+    delete process.env["KAIROS_ADMIN_PASSCODE"];
+    expect(hasAdminConfiguration()).toBe(true);
+    expect(await verifyConfiguredAdminPasscode("not-the-selected-passcode")).toBe(false);
+    delete process.env["KAIROS_SUPABASE_SERVICE_KEY"];
+    expect(hasAdminConfiguration()).toBe(false);
+    await expect(startAdminSession()).rejects.toThrow("not configured");
+  });
+  it("checks a salted verifier and binds sessions to private server material", async () => {
+    const candidate = "synthetic-unit-test-passphrase";
+    const salt = "00112233445566778899aabbccddeeff";
+    const key = await webcrypto.subtle.importKey(
+      "raw",
+      new TextEncoder().encode(candidate),
+      "PBKDF2",
+      false,
+      ["deriveBits"],
+    );
+    const digest = await webcrypto.subtle.deriveBits(
+      {
+        name: "PBKDF2",
+        hash: "SHA-256",
+        salt: Uint8Array.from(salt.match(/.{2}/g)!, (pair) => Number.parseInt(pair, 16)),
+        iterations: 1000,
+      },
+      key,
+      256,
+    );
+    const verifier = {
+      salt,
+      iterations: 1000,
+      digest: Array.from(new Uint8Array(digest), (value) =>
+        value.toString(16).padStart(2, "0"),
+      ).join(""),
+    };
+    expect(await verifyPasscodeVerifier(candidate, verifier)).toBe(true);
+    expect(await verifyPasscodeVerifier("wrong", verifier)).toBe(false);
+    await startAdminSession();
+    process.env["KAIROS_SUPABASE_SERVICE_KEY"] = "rotated-test-server-secret";
+    expect(await readAdminSession()).toBeNull();
   });
   it("rejects cross-origin mutations and throttles repeated login attempts", () => {
     request.headerOrigin = "https://attacker.example";

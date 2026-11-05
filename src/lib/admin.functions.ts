@@ -5,12 +5,12 @@ import {
   assertAdminSameOrigin,
   clearAdminSession,
   consumeAdminLoginAttempt,
-  getAdminPasscode,
+  hasAdminConfiguration,
   privateAdminResponse,
   readAdminSession,
   requireAdmin,
   startAdminSession,
-  verifyAdminPasscode,
+  verifyConfiguredAdminPasscode,
 } from "./admin-auth";
 import { exportLeadCsv, getLeadPage, saveLeadManagement } from "./admin-data";
 
@@ -23,7 +23,7 @@ const filterSchema = z.object({
 
 export const getAdminSession = createServerFn({ method: "GET" }).handler(async () => {
   const expiresAt = await readAdminSession();
-  return { authenticated: expiresAt !== null, configured: getAdminPasscode() !== null, expiresAt };
+  return { authenticated: expiresAt !== null, configured: hasAdminConfiguration(), expiresAt };
 });
 
 export const loginAdmin = createServerFn({ method: "POST" })
@@ -31,14 +31,13 @@ export const loginAdmin = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     assertAdminSameOrigin();
     consumeAdminLoginAttempt();
-    const passcode = getAdminPasscode();
-    if (!passcode)
+    if (!hasAdminConfiguration())
       throw new Error(
-        "Admin access is not configured. Add KAIROS_ADMIN_PASSCODE (12–256 characters) to the server secrets in Lovable.",
+        "Admin access is not configured. Check the existing server-only Supabase connection secret and any admin passcode override.",
       );
-    if (!(await verifyAdminPasscode(data.passcode.trim(), passcode)))
+    if (!(await verifyConfiguredAdminPasscode(data.passcode.trim())))
       throw new Error("Incorrect passcode. Please try again.");
-    const expiresAt = await startAdminSession(passcode);
+    const expiresAt = await startAdminSession();
     return { authenticated: true, configured: true, expiresAt };
   });
 
