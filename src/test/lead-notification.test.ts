@@ -103,10 +103,11 @@ describe("Kairos lead emails", () => {
     });
     expect(internalBody).toMatchObject({
       from: "Kairos Security Protection Plan <leads@example.com>",
-      to: ["staylor@kariossecurity.com"],
+      to: ["staylor@kairossecurity.com", "rrose@vektiss.com"],
       reply_to: "taylor@example.com",
       subject: "New Kairos Security lead — Taylor Johnson",
     });
+    expect(internalBody.to).toEqual(["staylor@kairossecurity.com", "rrose@vektiss.com"]);
     expect(internalBody.tags).toContainEqual({ name: "category", value: "security-lead" });
 
     expect(customerUrl).toBe("https://api.resend.com/emails");
@@ -118,9 +119,10 @@ describe("Kairos lead emails", () => {
     expect(customerBody).toMatchObject({
       from: "Kairos Security Protection Plan <leads@example.com>",
       to: ["taylor@example.com"],
-      reply_to: "staylor@kariossecurity.com",
+      reply_to: "staylor@kairossecurity.com",
       subject: "Thanks — Kairos Security received your request",
     });
+    expect(customerBody.to).toEqual([lead.email]);
     expect(customerBody.tags).toContainEqual({
       name: "category",
       value: "security-lead-confirmation",

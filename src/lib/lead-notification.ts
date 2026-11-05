@@ -25,7 +25,8 @@ type ResendEmailPayload = {
   tags: { name: string; value: string }[];
 };
 
-const LEAD_RECIPIENT = "staylor@kariossecurity.com";
+const LEAD_RECIPIENT = "staylor@kairossecurity.com";
+const LEAD_RECIPIENTS = [LEAD_RECIPIENT, "rrose@vektiss.com"];
 const BRAND_NAME = "Kairos Security Protection Plan";
 const KAIROS_SECURITY_PHONE = "+18885247678";
 
@@ -300,7 +301,7 @@ export async function sendLeadEmails(
     apiKey,
     {
       from,
-      to: [LEAD_RECIPIENT],
+      to: LEAD_RECIPIENTS,
       reply_to: lead.email,
       subject: `New Kairos Security lead — ${fullName(lead)}`,
       html: internalContent.html,

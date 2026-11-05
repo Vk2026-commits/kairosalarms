@@ -29,8 +29,8 @@ npm run dev
 
 Every completed quote request is first saved to the configured Supabase `leads` table, then sends two branded **Kairos Security Protection Plan** emails:
 
-1. A callback alert to `staylor@kariossecurity.com`, including the prospect's contact details, property answers, recorded contact consent, and one-click call/email actions. Its `Reply-To` is set to the prospect's email address.
-2. A customer confirmation to the prospect, thanking them, confirming the request was received, and explaining that a Kairos Security specialist will call soon. Its `Reply-To` is the Kairos callback inbox.
+1. A callback alert to both `staylor@kairossecurity.com` and `rrose@vektiss.com`, including the prospect's contact details, property answers, recorded contact consent, and one-click call/email actions. Its `Reply-To` is set to the prospect's email address.
+2. A customer confirmation addressed only to the prospect, thanking them, confirming the request was received, and explaining that a Kairos Security specialist will call soon. Its `Reply-To` is `staylor@kairossecurity.com`.
 
 Set these **server-only** environment variables in the deployment that runs the TanStack Start server function; never expose them as `VITE_*` variables or commit them to Git:
 
