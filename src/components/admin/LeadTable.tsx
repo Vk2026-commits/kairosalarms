@@ -1,4 +1,4 @@
-import { ArrowUpRight, CalendarClock, Inbox } from "lucide-react";
+import { ArrowUpRight, CalendarClock, Inbox, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { assigneeLabel, type AdminLead, type AdminLeadPage } from "@/lib/admin";
 import { Busy, StatusBadge } from "./admin-ui";
@@ -115,9 +115,20 @@ export function LeadTable({
                     >
                       {lead.name || "Unnamed inquiry"}
                     </button>
-                    <p className="mt-1 break-all text-xs text-muted-foreground">
-                      {lead.email || lead.phone || "No contact details"}
-                    </p>
+                    {lead.phone ? (
+                      <a
+                        href={`tel:${lead.phone.replace(/[^\d+]/g, "")}`}
+                        className="mt-1 inline-flex items-center gap-1 text-sm font-medium text-foreground hover:text-primary hover:underline"
+                      >
+                        <Phone className="size-3.5" aria-hidden="true" />
+                        {lead.phone}
+                      </a>
+                    ) : (
+                      <p className="mt-1 text-xs text-muted-foreground">No phone provided</p>
+                    )}
+                    {lead.email && (
+                      <p className="mt-1 break-all text-xs text-muted-foreground">{lead.email}</p>
+                    )}
                     <p className="mt-1 text-xs text-muted-foreground">
                       ZIP {lead.zip || "not provided"}
                     </p>
