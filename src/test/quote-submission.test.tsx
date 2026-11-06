@@ -40,3 +40,20 @@ it("never fires Lead for a rejected submission", async () => {
   await screen.findByRole("alert");
   expect(mocks.trackMetaLead).not.toHaveBeenCalled();
 });
+
+it("offers privacy and tracking choices without replacing contact consent or losing form inputs", async () => {
+  render(<QuoteFunnel />);
+  fireEvent.click(screen.getByRole("button", { name: "My Home" }));
+  fireEvent.click(await screen.findByRole("button", { name: "1 door" }));
+  fireEvent.click(await screen.findByRole("button", { name: "Alarm system" }));
+  const firstName = await screen.findByPlaceholderText("First name");
+  fireEvent.change(firstName, { target: { value: "Taylor" } });
+  const policyLink = screen.getByRole("link", { name: /Privacy Policy/ });
+  expect(policyLink).toHaveAttribute("href", "/privacy");
+  expect(policyLink).toHaveAttribute("target", "_blank");
+  expect(policyLink).toHaveAttribute("rel", "noopener noreferrer");
+  expect(screen.getByRole("link", { name: /ad tracking choices/ })).toHaveAttribute("href", "/privacy#ad-tracking");
+  expect(screen.getByRole("checkbox")).toBeRequired();
+  expect(firstName).toHaveValue("Taylor");
+  expect(mocks.submitLead).not.toHaveBeenCalled();
+});

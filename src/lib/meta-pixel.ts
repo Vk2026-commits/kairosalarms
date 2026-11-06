@@ -82,7 +82,7 @@ export function initMetaPixel(): boolean {
 /** Fires PageView once per distinct URL (page load or real navigation). */
 export function trackMetaPageView(url: string) {
   const pathname = new URL(url, "https://alarms.kairossecurity.com").pathname;
-  if (pathname === "/admin" || pathname.startsWith("/admin/")) return;
+  if (pathname === "/admin" || pathname.startsWith("/admin/") || pathname === "/privacy") return;
   if (url === lastPageViewUrl) return;
   if (!initMetaPixel()) return;
   lastPageViewUrl = url;

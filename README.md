@@ -50,3 +50,7 @@ The **Kairos Security Total Home Protection Plan** dashboard lets the team view 
 The selected shared passcode is already configured as a salted server-side verifier; no new passcode secret is required. The plaintext value is never stored in Git or the browser bundle. Existing server-side Supabase secrets are reused, including domain-separated session signing; sessions expire after eight hours. To change the code later, set a server-only `KAIROS_ADMIN_PASSCODE` override (12–256 characters) through Lovable's protected secret input.
 
 See [admin setup and security notes](docs/admin-setup.md) for the required existing table fields, concurrency behavior, CSV limits, host-level rate-limit recommendation, and publishing steps. Publishing remains a user action in Lovable.
+
+## Privacy Policy — `/privacy`
+
+The landing-page footer and lead-form disclosures link to the Privacy Policy and browser-local Meta ad-tracking controls. The notice describes the implemented form, provider sharing, first-party attribution, Meta events, browser storage, and contact channels. The opt-out preserves lead delivery and contact-consent handling; it does not erase previously sent data. Global Privacy Control disables site-controlled Meta tracking. Read [privacy implementation and review notes](docs/privacy-disclosures.md) before publishing. This notice is not a legal-compliance certification or an ongoing monitoring service.

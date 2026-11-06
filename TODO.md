@@ -9,3 +9,9 @@
 - [ ] Publish the updated version in Lovable and verify live database access. Publishing remains a user action.
 
 The prior email update was committed as `d217b63`: internal alerts go to Stephen and Rose, and customer confirmations remain separate.
+
+## Privacy disclosure update
+
+- [x] Add an accessible, visible Privacy Policy link to the landing-page footer and next to lead-form contact disclosures, with a real `/privacy` page covering the implemented collection, lead handling, providers, contact consent, browser storage, and Meta tracking. Do not invent business retention promises or claim legal compliance.
+- [x] Provide a working browser-local Meta ad-tracking opt-out and disclose its scope, Global Privacy Control handling, and contact choices. Preserve lead submissions, signup emails, the landing-page offer, and the private CRM. All 65 tests, TypeScript, new privacy-file lint, and the production build passed.
+- [x] Prepare the validated privacy update for the existing Lovable-connected GitHub branch without republishing or creating ongoing monitoring or reporting. Publication remains a separate user action after sync; business-specific legal and retention details require owner review.

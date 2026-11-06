@@ -287,6 +287,17 @@ export function QuoteFunnel() {
                   email about your security options, including using automated technology. Consent
                   is not a condition of purchase. Message and data rates may apply.
                 </p>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  We save your inquiry and share it with our follow-up team. This site also uses
+                  Meta Pixel for advertising measurement and targeting. Read our{" "}
+                  <a href="/privacy" target="_blank" rel="noopener noreferrer" className="font-semibold text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">
+                    Privacy Policy<span className="sr-only"> (opens in a new tab)</span>
+                  </a>{" "}
+                  and manage your{" "}
+                  <a href="/privacy#ad-tracking" target="_blank" rel="noopener noreferrer" className="font-semibold text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">
+                    ad tracking choices<span className="sr-only"> (opens in a new tab)</span>
+                  </a>.
+                </p>
               </form>
             </>
           )}

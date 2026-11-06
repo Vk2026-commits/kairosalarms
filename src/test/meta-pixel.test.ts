@@ -65,6 +65,13 @@ describe("Production-only Meta tracking", () => {
     expect(fbq).toHaveBeenCalledWith("set", "autoConfig", false, "4539741692932903");
   });
 
+  it("does not initialize or track the privacy-choice page", async () => {
+    const pixel = await import("@/lib/meta-pixel");
+    pixel.trackMetaPageView("/privacy");
+    pixel.trackMetaPageView("/privacy#ad-tracking");
+    expect(fbq).not.toHaveBeenCalled();
+  });
+
   it("counts an accepted submission once, including after refresh", async () => {
     let pixel = await import("@/lib/meta-pixel");
     pixel.trackMetaLead("accepted-submission");

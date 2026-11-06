@@ -15,6 +15,7 @@ import logo from "@/assets/kairos-logo.png.asset.json";
 import heroImg from "@/assets/hero-home.jpg";
 import installImg from "@/assets/install.jpg";
 import { QuoteFunnel } from "@/components/QuoteFunnel";
+import { SiteFooter } from "@/components/SiteFooter";
 import { captureAttribution, trackEvent } from "@/lib/tracking";
 import { Button } from "@/components/ui/button";
 
@@ -246,12 +247,7 @@ function Index() {
           Find My Security Fit →
         </Button>
       </section>
-      <footer className="bg-navy-deep px-5 py-7 text-center text-xs text-primary-foreground/70">
-        <p className="flex items-center justify-center gap-1.5 font-semibold text-primary-foreground/85">
-          <MapPin className="h-3.5 w-3.5" /> Proudly serving Houston and the surrounding areas
-        </p>
-        <p className="mt-2">© {new Date().getFullYear()} Kairos Security. All rights reserved.</p>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

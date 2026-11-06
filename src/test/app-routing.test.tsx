@@ -20,4 +20,10 @@ describe("App routing", () => {
     const matches = router.matchRoutes("/admin");
     expect(matches.at(-1)?.routeId).toBe("/admin");
   });
+
+  it("matches /privacy as a real page", () => {
+    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+    const matches = router.matchRoutes("/privacy");
+    expect(matches.at(-1)?.routeId).toBe("/privacy");
+  });
 });
